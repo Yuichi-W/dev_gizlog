@@ -19,7 +19,6 @@ class CreateQuestionsTable extends Migration
             $table->integer('tag_category_id');
             $table->string('title');
             $table->text('content');
-            $table->date('reporting_time')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
