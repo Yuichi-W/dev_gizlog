@@ -1,11 +1,11 @@
 <?php
 
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateQuestionsTable extends Migration
+class CreateDailyReportsTable extends Migration
 {
-
     /**
      * Run the migrations.
      *
@@ -13,15 +13,14 @@ class CreateQuestionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('questions', function(Blueprint $table) {
+        Schema::create('daily_reports', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id');
-            $table->integer('tag_category_id');
+            $table->integer('user_id')->unsignd();
             $table->string('title');
             $table->text('content');
-            $table->date('reporting_time')->nullable();
+            $table->date('reporting_time');
             $table->timestamps();
-            $table->softDeletes();
+            $table->softDeletes('deleted_at');
         });
     }
 
@@ -32,8 +31,6 @@ class CreateQuestionsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('questions');
+        Schema::dropIfExists('daily_reports');
     }
-
 }
-
