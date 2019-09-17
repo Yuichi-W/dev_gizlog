@@ -27,6 +27,8 @@
     <div class="btn-delete">
       <form>
         <button class="btn btn-danger" type="submit"><i class="fa fa-trash-o"></i></button>
+        {!! Form::submit('Update', ['class' => 'btn btn-success pull-right']) !!}
+    {!! Form::close() !!}
       </form>
     </div>
   </div>
