@@ -7,14 +7,14 @@
     <!-- <form> -->
     {!! From::open(['route' => ['user.daily_report.update', '$report->id'], 'method' => 'PUT']) !!}
       <!-- <input class="form-control" name="user_id" type="hidden" value="4"> -->
-      {!! Form::hidden('user_id', '4') !!}
+      {!! Form::hidden('user_id', '4', ['class' => 'form-control']) !!}
       <div class="form-group form-size-small">
         <!-- <input class="form-control" name="reporting_time" type="date"> -->
         {!! Form::input('date', 'reporting_time', '$report->reporting_time', ['required', 'class' => 'form-control']) !!}
       <span class="help-block"></span>
       </div>
       <div class="form-group">
-        <input class="form-control" placeholder="Title" name="title" type="text">
+        <!-- <input class="form-control" placeholder="Title" name="title" type="text"> -->
         {!! Form::input('text', 'title', '$report->title', ['required', 'class' => 'form-control', 'placeholder' => 'Title']) !!}
       <span class="help-block"></span>
       </div>
