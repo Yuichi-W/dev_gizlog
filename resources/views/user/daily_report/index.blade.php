@@ -21,12 +21,14 @@
         </tr>
       </thead>
       <tbody>
+        @foreach ($reports as $report)
           <tr class="row">
-            <td class="col-xs-2">2019/9/16</td>
-            <td class="col-xs-3">ただの表示</td>
-            <td class="col-xs-5">中身のないコンテンツ</td>
-            <td class="col-xs-2"><a class="btn" href="/report/show"><i class="fa fa-book"></i></a></td>
+            <td class="col-xs-2">{{ $report->reporting_time->format('m/d(D)') }}</td>
+            <td class="col-xs-3">{{ $report->title }}</td>
+            <td class="col-xs-5">{{ $report->content }}</td>
+            <td class="col-xs-2"><a class="btn" href="report/{{ $report->id }}"><i class="fa fa-book"></i></a></td>
           </tr>
+        @endforeach
       </tbody>
     </table>
   </div>

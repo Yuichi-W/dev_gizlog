@@ -4,25 +4,21 @@
 <h2 class="brand-header">日報作成</h2>
 <div class="main-wrap">
   <div class="container">
-    <!-- <input class="form-control" name="user_id" type="hidden"> -->
-    {!! Form::open(['route' => 'user.daily_report.store']) !!}
+    {!! Form::open(['route' => 'report.store']) !!}
+      {!! Form::input('hidden', 'user_id', 2, ['class' => 'form-control']) !!}
       <div class="form-group form-size-small">
-        <!-- <input class="form-control" name="reporting_time" type="date"> -->
-        {!! Form::input('date', 'date', '<?= date('Y-m-j');?>', ['required', 'class' => 'form-control']) !!}
-        <span class="help-block"></span>
+        {!! Form::input('date', 'reporting_time', $today, ['class' => 'form-control']) !!}
+        <span class="help-block "></span>
       </div>
-      <div class="form-group">
-        <!-- <input class="form-control" placeholder="Title" name="title" type="text"> -->
-        {!! From::input('text', 'title', null, ['required', 'class' => 'form-control', 'placeholder' => 'Title']) !!}
-        <span class="help-block"></span>
+      <div class="form-group {{ $errors->has('title')? 'has-error' : '' }}">
+        {!! Form::input('text', 'title', null, ['class' => 'form-control', 'placeholder' => 'Title']) !!}
+        <span class="help-block">{{ $errors->first('title') }}</span>
       </div>
-      <div class="form-group">
-        <!-- <textarea class="form-control" placeholder="Content" name="contents" cols="50" rows="10"></textarea> -->
-        {!! Form::input('texterea', 'contents', ['cols' => '50', 'rows' => '10'], ['required', 'class' => 'form-control', 'placeholder' => 'Content']) !!}
-        <span class="help-block"></span>
+      <div class="form-group {{ $errors->has('content')? 'has-error' : '' }}">
+        {!! Form::textarea('content', '', ['cols' => 50, 'rows' => 10, 'class' => 'form-control', 'placeholder' => 'Content']) !!}
+        <span class="help-block">{{ $errors->first('content') }}</span>
       </div>
-      <!-- <button type="submit" class="btn btn-success pull-right">Add</button> -->
-      {!! Form::submit('Add', ['class' => 'btn btn-success pull-right']) !!}
+      <button type="submit" class="btn btn-success pull-right">Add</button>
     {!! Form::close() !!}
   </div>
 </div>
