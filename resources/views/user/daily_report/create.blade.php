@@ -5,7 +5,6 @@
 <div class="main-wrap">
   <div class="container">
     {!! Form::open(['route' => 'report.store']) !!}
-      {!! Form::input('hidden', 'user_id', 2, ['class' => 'form-control']) !!}
       <div class="form-group form-size-small">
         {!! Form::input('date', 'reporting_time', $today, ['class' => 'form-control']) !!}
         <span class="help-block "></span>
@@ -18,7 +17,7 @@
         {!! Form::textarea('content', '', ['cols' => 50, 'rows' => 10, 'class' => 'form-control', 'placeholder' => 'Content']) !!}
         <span class="help-block">{{ $errors->first('content') }}</span>
       </div>
-      <button type="submit" class="btn btn-success pull-right">Add</button>
+      {!! Form::submit('Add', ['class' => 'btn btn-success pull-right']) !!}
     {!! Form::close() !!}
   </div>
 </div>

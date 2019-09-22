@@ -5,7 +5,7 @@
 <div class="main-wrap">
   <div class="panel panel-success">
     <div class="panel-heading">
-      {{ $report->reporting_time }}の日報
+      {{ $report->reporting_time->format('m/d(D)') }}の日報
     </div>
     <div class="table-responsive">
       <table class="table table-striped table-bordered">
@@ -26,7 +26,7 @@
     <a class="btn btn-edit" href="{{ route('report.edit', $report->id) }}"><i class="fa fa-pencil" aria-hidden="true"></i></a>
     <div class="btn-delete">
       {!! Form::open(['route' => ['report.destroy', $report->id], 'method' => 'DELETE']) !!}
-      <button class="btn btn-danger" type="submit"><i class="fa fa-trash-o"></i></button>
+      {!! Form::button('<i class="fa fa-trash-o"></i>', ['type' => 'submit', 'class' => 'btn btn-danger']) !!}
       {!! Form::close() !!}
     </div>
   </div>

@@ -1,20 +1,23 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\DailyReport;
 use App\Http\Requests\User\DailyReportRequest;
-
+use Auth;
+use DB;
 
 class DailyReportController extends Controller
 {
 
     private $report;
 
-    public function __construct(DailyReport $instanceClass){
-        $this->report = $instanceClass;
+    public function __construct(DailyReport $dailyReport)
+    {
+        $this->middleware('auth');
+        $this->report = $dailyReport;
     }
 
     /**
@@ -23,10 +26,19 @@ class DailyReportController extends Controller
      * @return \Illuminate\Http\Response
      * 
      */
-    public function index()
+    public function index(Request $request)
     {
-        $reports = $this->report->all();
-        return view('user.daily_report.index', compact('reports'));
+        $user = Auth::user();
+        $reports = $this->report->getByUserId(Auth::id());
+        $input = $request->all();
+        $inputs = $request->search_month;
+        if(!empty($input['search_month'])) {
+            $reportTime = $this->report->where('user_id', Auth::id())->where('reporting_time', 'LIKE', "%{$inputs}%")
+           ->get();
+        } else {
+            $reportTime = $this->report->getByUserId(Auth::id());
+        }
+        return view('user.daily_report.index', compact('reports', 'inputs', 'reportTime'));
     }
 
     /**
@@ -49,6 +61,7 @@ class DailyReportController extends Controller
     public function store(DailyReportRequest $request)
     {
         $input = $request->all();
+        $input['user_id'] = Auth::id();
         $this->report->fill($input)->save();
         return redirect()->to('report');
     }
