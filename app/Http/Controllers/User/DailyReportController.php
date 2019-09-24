@@ -30,6 +30,7 @@ class DailyReportController extends Controller
     public function index(Request $request)
     {
         $month = $request->search_month;
+
         if (isset($month)) {
             $reportMonth = $this->report->where('user_id', Auth::id())->where('reporting_time', 'LIKE', '%'.$month.'%')->orderBy('reporting_time', 'desc')
            ->get();
@@ -46,8 +47,6 @@ class DailyReportController extends Controller
      */
     public function create()
     {
-        // $today = Carbon::now()->format('Y-m-d');
-        // return view('user.daily_report.create', compact('today'));
         return view('user.daily_report.create');
     }
 
