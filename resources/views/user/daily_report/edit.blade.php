@@ -9,11 +9,11 @@
         {!! Form::input('date', 'reporting_time', $report->reporting_time->format('Y-m-d'), ['class' => 'form-control']) !!}
         <span class="help-block"></span>
       </div>
-      <div class="form-group {{ $errors->has('title')? 'has-error' : '' }}">
-        {!! Form::input('text', 'title', $report->title, ['class' => 'form-control', 'placeholder' => 'Title']) !!}
+      <div class="form-group {{ $errors->has('title') ? 'has-error' : '' }}">
+        {!! Form::text('title', $report->title, ['class' => 'form-control', 'placeholder' => 'Title']) !!}
           <span class="help-block">{{ $errors->first('title') }}</span>
       </div>
-      <div class="form-group {{ $errors->has('content')? 'has-error' : '' }}">
+      <div class="form-group {{ $errors->has('content') ? 'has-error' : '' }}">
         {!! Form::textarea('content', $report->content, ['cols' => 50, 'rows' => 10, 'class' => 'form-control', 'placeholder' => '本文']) !!}
           <span class="help-block">{{ $errors->first('content') }}</span>
       </div>

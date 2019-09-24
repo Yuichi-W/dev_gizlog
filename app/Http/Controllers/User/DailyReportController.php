@@ -7,7 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\DailyReport;
 use App\Http\Requests\User\DailyReportRequest;
 use Auth;
-use DB;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class DailyReportController extends Controller
 {
@@ -28,17 +29,14 @@ class DailyReportController extends Controller
      */
     public function index(Request $request)
     {
-        $user = Auth::user();
-        $reports = $this->report->getByUserId(Auth::id());
-        $input = $request->all();
-        $inputs = $request->search_month;
-        if(!empty($input['search_month'])) {
-            $reportTime = $this->report->where('user_id', Auth::id())->where('reporting_time', 'LIKE', "%{$inputs}%")
+        $month = $request->search_month;
+        if (isset($month)) {
+            $reportMonth = $this->report->where('user_id', Auth::id())->where('reporting_time', 'LIKE', '%'.$month.'%')->orderBy('reporting_time', 'desc')
            ->get();
         } else {
-            $reportTime = $this->report->getByUserId(Auth::id());
+            $reportMonth = $this->report->where('user_id', Auth::id())->orderBy('reporting_time', 'desc')->get();
         }
-        return view('user.daily_report.index', compact('reports', 'inputs', 'reportTime'));
+        return view('user.daily_report.index', compact('reportMonth'));
     }
 
     /**
@@ -48,8 +46,9 @@ class DailyReportController extends Controller
      */
     public function create()
     {
-        $today = date('Y/m/j(D)');
-        return view('user.daily_report.create', compact('today'));
+        // $today = Carbon::now()->format('Y-m-d');
+        // return view('user.daily_report.create', compact('today'));
+        return view('user.daily_report.create');
     }
 
     /**

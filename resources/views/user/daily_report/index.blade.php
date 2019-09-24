@@ -21,11 +21,11 @@
         </tr>
       </thead>
       <tbody>
-        @foreach ($reportTime as $report)
+        @foreach ($reportMonth as $report)
           <tr class="row">
             <td class="col-xs-2">{{ $report->reporting_time->format('m/d(D)') }}</td>
             <td class="col-xs-3">{{ $report->title }}</td>
-            <td class="col-xs-5">{{ mb_strimwidth($report->content,0,30,'...','UTF-8') }}</td>
+            <td class="col-xs-5">{{ mb_strimwidth($report->content, 0, 30, '...', 'UTF-8') }}</td>
             <td class="col-xs-2"><a class="btn" href="{{ route('report.show', $report->id) }}"><i class="fa fa-book"></i></a></td>
           </tr>
         @endforeach
