@@ -5,9 +5,9 @@
 <div class="main-wrap">
   <div class="container">
     {!! Form::open(['route' => 'report.store']) !!}
-      <div class="form-group form-size-small">
+      <div class="form-group form-size-small {{ $errors->has('reporting_time') ? 'has-error' : '' }}">
         {!! Form::input('date', 'reporting_time', Carbon::now()->format('Y-m-d'), ['class' => 'form-control']) !!}
-        <span class="help-block "></span>
+        <span class="help-block ">{{ $errors->first('reporting_time') }}</span>
       </div>
       <div class="form-group {{ $errors->has('title') ? 'has-error' : '' }}">
         {!! Form::text('title', null, ['class' => 'form-control', 'placeholder' => 'Title']) !!}
