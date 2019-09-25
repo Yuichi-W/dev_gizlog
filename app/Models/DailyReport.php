@@ -18,6 +18,15 @@ class DailyReport extends Model
 
     public function getByUserId($id)
     {
-        return $this->where('user_id', $id)->get();
+        return $this->where('user_id', $id)->orderBy('reporting_time', 'desc')->get();
+    }
+
+    public function SearchMonth($id, $month)
+    {
+        return $this->where([
+            ['user_id', $id],
+            ['reporting_time', 'LIKE', '%'.$month.'%']
+        ])->orderBy('reporting_time', 'desc')
+        ->get();
     }
 }

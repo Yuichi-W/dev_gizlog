@@ -31,11 +31,10 @@ class DailyReportController extends Controller
     {
         $month = $request->search_month;
 
-        if (isset($month)) {
-            $reportMonth = $this->report->where('user_id', Auth::id())->where('reporting_time', 'LIKE', '%'.$month.'%')->orderBy('reporting_time', 'desc')
-           ->get();
+        if (isset($request)) {
+            $reportMonth = $this->report->SearchMonth(Auth::id(), $month);
         } else {
-            $reportMonth = $this->report->where('user_id', Auth::id())->orderBy('reporting_time', 'desc')->get();
+            $reportMonth = $this->report->getByUserId(Auth::id());
         }
         return view('user.daily_report.index', compact('reportMonth'));
     }
