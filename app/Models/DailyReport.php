@@ -21,7 +21,7 @@ class DailyReport extends Model
         return $this->where('user_id', $id)->orderBy('reporting_time', 'desc')->get();
     }
 
-    public function SearchMonth($id, $month)
+    public function fetchSearchingReport($id, $month)
     {
         return $this->where([
             ['user_id', $id],

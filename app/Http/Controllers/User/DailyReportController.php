@@ -7,8 +7,6 @@ use Illuminate\Http\Request;
 use App\Models\DailyReport;
 use App\Http\Requests\User\DailyReportRequest;
 use Auth;
-use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
 
 class DailyReportController extends Controller
 {
@@ -29,14 +27,13 @@ class DailyReportController extends Controller
      */
     public function index(Request $request)
     {
-        $month = $request->search_month;
 
         if (isset($request)) {
-            $reportMonth = $this->report->SearchMonth(Auth::id(), $month);
+            $dailyReports = $this->report->fetchSearchingReport(Auth::id(), $request->search_month);
         } else {
-            $reportMonth = $this->report->getByUserId(Auth::id());
+            $dailyReports = $this->report->getByUserId(Auth::id());
         }
-        return view('user.daily_report.index', compact('reportMonth'));
+        return view('user.daily_report.index', compact('dailyReports'));
     }
 
     /**
@@ -52,14 +49,16 @@ class DailyReportController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  DailyReportRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function store(DailyReportRequest $request)
     {
+        // dd($request);
         $input = $request->all();
         $input['user_id'] = Auth::id();
         $this->report->fill($input)->save();
+        // dd($this->report->fill($input)->save()); true
         return redirect()->route('report.index');
     }
 
@@ -90,7 +89,7 @@ class DailyReportController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  DailyReportRequest  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */

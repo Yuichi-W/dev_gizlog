@@ -21,7 +21,7 @@
         </tr>
       </thead>
       <tbody>
-        @foreach ($reportMonth as $report)
+        @foreach ($dailyReports as $report)
           <tr class="row">
             <td class="col-xs-2">{{ $report->reporting_time->format('m/d(D)') }}</td>
             <td class="col-xs-3">{{ $report->title }}</td>
