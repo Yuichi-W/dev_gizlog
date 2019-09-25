@@ -30,6 +30,7 @@ class DailyReportController extends Controller
 
         if (isset($request)) {
             $dailyReports = $this->report->fetchSearchingReport(Auth::id(), $request->search_month);
+            $request->flash();
         } else {
             $dailyReports = $this->report->getByUserId(Auth::id());
         }
@@ -54,11 +55,9 @@ class DailyReportController extends Controller
      */
     public function store(DailyReportRequest $request)
     {
-        // dd($request);
         $input = $request->all();
         $input['user_id'] = Auth::id();
         $this->report->fill($input)->save();
-        // dd($this->report->fill($input)->save()); true
         return redirect()->route('report.index');
     }
 
