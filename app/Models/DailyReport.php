@@ -23,10 +23,9 @@ class DailyReport extends Model
 
     public function fetchSearchingReport($id, $month)
     {
-        return $this->where([
-            ['user_id', $id],
-            ['reporting_time', 'LIKE', '%'.$month.'%']
-        ])->orderBy('reporting_time', 'desc')
-        ->get();
+        return $this->where('user_id', $id)
+            ->where('reporting_time', 'LIKE', '%' . $month . '%')
+            ->orderBy('reporting_time', 'desc')
+            ->get();
     }
 }

@@ -27,8 +27,9 @@ class DailyReportController extends Controller
      */
     public function index(Request $request)
     {
+        $inputs = $request->all();
 
-        if (isset($request)) {
+        if (!empty($inputs)) {
             $dailyReports = $this->report->fetchSearchingReport(Auth::id(), $request->search_month);
             $request->flash();
         } else {
