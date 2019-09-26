@@ -27,14 +27,18 @@ class DailyReportController extends Controller
      */
     public function index(Request $request)
     {
-        $inputs = $request->all();
+        // $inputs = $request->all();
 
-        if (!empty($inputs)) {
-            $dailyReports = $this->report->fetchSearchingReport(Auth::id(), $request->search_month);
-            $request->flash();
-        } else {
-            $dailyReports = $this->report->getByUserId(Auth::id());
-        }
+        // if (!empty($inputs)) {
+        //     $dailyReports = $this->report->fetchSearchingReport(Auth::id(), $request->search_month);
+        //     $request->flash();
+        // } else {
+        //     $dailyReports = $this->report->getByUserId(Auth::id());
+        // }
+        // return view('user.daily_report.index', compact('dailyReports'));
+
+        $inputs = $request->all();
+        $this->report->getRerportList(Auth::id(), $inputs);
         return view('user.daily_report.index', compact('dailyReports'));
     }
 
