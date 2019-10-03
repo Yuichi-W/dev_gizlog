@@ -2,7 +2,7 @@
 @section ('content')
 
 <h2 class="brand-header">
-  <img src="" class="avatar-img">&nbsp;&nbsp;My page
+  <img src="{{ Auth::user()->avatar }}" class="avatar-img">&nbsp;&nbsp;My page
 </h2>
 <div class="main-wrap">
   <div class="content-wrapper table-responsive">
@@ -18,24 +18,24 @@
         </tr>
       </thead>
       <tbody>
+        @foreach($questions as $question)
         <tr class="row">
-          <td class="col-xs-2"></td>
-          <td class="col-xs-1"></td>
-          <td class="col-xs-5"></td>
-          <td class="col-xs-2"><span class="point-color"></span></td>
+          <td class="col-xs-2">{{ $question->created_at->format('Y/m/d') }}</td>
+          <td class="col-xs-1">{{ $question->tagCategory->name }}</td>
+          <td class="col-xs-5">{{ mb_strimwidth($question->title, 0, 30, '...', 'UTF-8') }}</td>
+          <td class="col-xs-2">{{ $question->comment->count() }}<span class="point-color"></span></td>
           <td class="col-xs-1">
-            <a class="btn btn-success" href="">
+            <a class="btn btn-success" href="{{ route('question.edit', $question->id) }}">
               <i class="fa fa-pencil" aria-hidden="true"></i>
             </a>
           </td>
           <td class="col-xs-1">
-            <form>
-              <button class="btn btn-danger" type="submit">
-                <i class="fa fa-trash-o" aria-hidden="true"></i>
-              </button>
-            </form>
+            {!! Form::open(['route' => ['question.destroy', $question->id], 'method' => 'DELETE']) !!}
+              {!! Form::button('<i class="fa fa-trash-o" aria-hidden="true"></i>', ['type' => 'submit', 'class' => 'btn btn-danger']) !!}
+            {!! Form::close() !!}
           </td>
         </tr>
+        @endforeach
       </tbody>
     </table>
   </div>
