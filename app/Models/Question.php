@@ -43,17 +43,30 @@ class Question extends Model
 
     public function searchingQuestion($inputs)
     {
-        if(empty($inputs)) {
-            $questions = $this->question->all();
+        if (!empty($inputs['search_word'])) {
+            $questions = $this->searchingWordQuestion($inputs['search_word']);
+        } elseif (!empty($inputs['tag_category_id'])) {
+            $questions = $this->searchingCategoryQuestion($inputs['tag_category_id']);
+        }else {
+            $questions = $this->all()->sortByDesc('created_at');
         }
-        if() {
-            $questions = $this->question->searchingWordQuestion();
-        }
+        return $questions;
     }
 
     public function searchingWordQuestion($keyword)
     {
         $builder = $this->newQuery(); 
+        $builder->where('title', 'like', '%' .$keyword. '%');
+        $builder->orderBy('created_at', 'desc');
+        return $builder->get();
+    }
+
+    public function searchingCategoryQuestion($id)
+    {
+        $builder = $this->newQuery();
+        $builder->where('tag_category_id', $id );
+        $builder->orderBy('created_at', 'desc');
+        return $builder->get();
     }
 
     public function searchingUserQuestion($userId)

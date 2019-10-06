@@ -24,7 +24,7 @@ class QuestionsRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required|max:30',
+            'title'   => 'required|max:30',
             'content' => 'required|max:1000',
         ];
     }
@@ -32,7 +32,7 @@ class QuestionsRequest extends FormRequest
     public function messages()
     {
         return [
-            '.required' => '入力必須項目です',
+            'required' => '入力必須項目です',
         ];
     }
 }
