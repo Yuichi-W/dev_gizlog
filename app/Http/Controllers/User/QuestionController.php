@@ -23,7 +23,6 @@ class QuestionController extends Controller
         $this->question = $question;
         $this->comment = $comment;
         $this->tagCategory = $tagCategory;
-
     }
 
     /**
@@ -59,7 +58,7 @@ class QuestionController extends Controller
     {
         $inputs = $request->all();
         $this->question->create($inputs);
-        return redirect()->to('question');
+        return redirect()->route('question.index');
     }
 
     /**
@@ -97,7 +96,7 @@ class QuestionController extends Controller
     {
         $inputs = $request->all();
         $this->question->find($id)->fill($inputs)->save();
-        return redirect()->to('question');
+        return redirect()->route('question.index');
     }
 
     /**
@@ -109,7 +108,7 @@ class QuestionController extends Controller
     public function destroy($id)
     {
         $this->question->find($id)->delete();
-        return redirect()->to('question');
+        return redirect()->route('question.index');
     }
 
     /**
@@ -130,7 +129,7 @@ class QuestionController extends Controller
      */
     public function mypage(Request $request)
     {
-        $questions = $this->question->searchingUserQuestion(Auth::id());
+        $questions = $this->question->searchingUserQuestion(Auth::id())->get();
         $inputs = $request->all();
         $category = $this->tagCategory->all();
         return view('user.question.mypage', compact('inputs', 'category', 'questions'));

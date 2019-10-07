@@ -33,48 +33,43 @@ class Question extends Model
 
     public function tagCategory() 
     {
-        return $this->belongsTo(TagCategory::class, 'tag_category_id');
+        return $this->belongsTo(TagCategory::class);
     }
 
     public function comment()
     {
-        return $this->hasMany(Comment::class, 'question_id');
+        return $this->hasMany(Comment::class);
     }
 
     public function searchingQuestion($inputs)
     {
         if (!empty($inputs['search_word'])) {
-            $questions = $this->searchingWordQuestion($inputs['search_word']);
-        } elseif (!empty($inputs['tag_category_id'])) {
-            $questions = $this->searchingCategoryQuestion($inputs['tag_category_id']);
-        }else {
+            $questions = $this->searchingWordQuestion($inputs['search_word'])->get();
+            if (!empty($inputs['tag_category_id'])) {
+                $questions = $this->searchingWordQuestion($inputs['search_word'])->searchingCategoryQuestion($inputs['tag_category_id'])->get();
+            }
+        } else {
             $questions = $this->all()->sortByDesc('created_at');
+            if (!empty($inputs['tag_category_id'])) {
+                $questions = $this->searchingCategoryQuestion($inputs['tag_category_id'])->get();
+            } 
         }
         return $questions;
     }
 
-    public function searchingWordQuestion($keyword)
+    public function scopeSearchingWordQuestion($query, $keyword) 
     {
-        $builder = $this->newQuery(); 
-        $builder->where('title', 'like', '%' .$keyword. '%');
-        $builder->orderBy('created_at', 'desc');
-        return $builder->get();
+        return $query->where('title', 'like', '%' .$keyword. '%')->orderBy('created_at', 'desc');
     }
 
-    public function searchingCategoryQuestion($id)
+    public function scopeSearchingCategoryQuestion($query, $id)
     {
-        $builder = $this->newQuery();
-        $builder->where('tag_category_id', $id );
-        $builder->orderBy('created_at', 'desc');
-        return $builder->get();
+        return $query->where('tag_category_id', $id )->orderBy('created_at', 'desc');
     }
 
-    public function searchingUserQuestion($userId)
+    public function scopSearchingUserQuestion($query, $userId)
     {
-        $builder = $this->newQuery();
-        $builder->where('user_id', $userId);
-        $builder->orderBy('created_at', 'desc');
-        return $builder->get();
+        return $query->where('user_id', $userId)->orderBy('created_at', 'desc');
     }
 }
 
