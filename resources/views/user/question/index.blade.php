@@ -15,9 +15,9 @@
       </a>
     </div>
     <div class="category-wrap">
-      <div class="btn all" id="0">all</div>
+      <div class="btn all @if (empty($inputs['tag_category_id'])) selected @endif" id="0">all</div>
       @foreach($categories as $category)
-        <div class="btn {{ $category->name }}" id="{{ $category->id }}">{{ $category->name }}</div>
+        <div class="btn @if (isset($inputs['tag_category_id']) && $category->id == $inputs['tag_category_id']) selected @endif {{ $category->name }}" id="{{ $category->id }}">{{ $category->name }}</div>
       @endforeach
       {!! Form::input('hidden', 'tag_category_id', null, ['id' => 'category-val']) !!}
     </div>

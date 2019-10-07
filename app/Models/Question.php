@@ -67,7 +67,7 @@ class Question extends Model
         return $query->where('tag_category_id', $id )->orderBy('created_at', 'desc');
     }
 
-    public function scopSearchingUserQuestion($query, $userId)
+    public function scopeSearchingUserQuestion($query, $userId)
     {
         return $query->where('user_id', $userId)->orderBy('created_at', 'desc');
     }
