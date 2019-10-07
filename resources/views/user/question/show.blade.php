@@ -14,7 +14,7 @@
         <tbody>
           <tr>
             <th class="table-column">Title</th>
-            <td class="td-text">{{ $question->title}}</td>
+            <td class="td-text">{{ $question->title }}</td>
           </tr>
           <tr>
             <th class="table-column">Question</th>
