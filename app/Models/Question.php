@@ -36,35 +36,23 @@ class Question extends Model
         return $this->belongsTo(TagCategory::class);
     }
 
-    public function comment()
+    public function comments()
     {
         return $this->hasMany(Comment::class);
     }
 
-    public function searchingQuestion($inputs)
+    public function scopeSearchingQuestion($query, $inputs)
     {
-        if (!empty($inputs['search_word'])) {
-            $questions = $this->searchingWordQuestion($inputs['search_word'])->get();
-            if (!empty($inputs['tag_category_id'])) {
-                $questions = $this->searchingWordQuestion($inputs['search_word'])->searchingCategoryQuestion($inputs['tag_category_id'])->get();
+        if(!empty($inputs)) {
+            $questions = $query->where('title', 'like', '%' .$inputs['search_word']. '%');
+            if(!empty($inputs['tag_category_id'])) {
+                $questions->where('tag_category_id', $inputs['tag_category_id']);
             }
+            $questions = $questions->orderBy('created_at', 'desc')->get();
         } else {
             $questions = $this->all()->sortByDesc('created_at');
-            if (!empty($inputs['tag_category_id'])) {
-                $questions = $this->searchingCategoryQuestion($inputs['tag_category_id'])->get();
-            } 
         }
         return $questions;
-    }
-
-    public function scopeSearchingWordQuestion($query, $keyword) 
-    {
-        return $query->where('title', 'like', '%' .$keyword. '%')->orderBy('created_at', 'desc');
-    }
-
-    public function scopeSearchingCategoryQuestion($query, $id)
-    {
-        return $query->where('tag_category_id', $id )->orderBy('created_at', 'desc');
     }
 
     public function scopeSearchingUserQuestion($query, $userId)
