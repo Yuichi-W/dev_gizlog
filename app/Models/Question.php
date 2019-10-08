@@ -48,7 +48,7 @@ class Question extends Model
             if(!empty($inputs['tag_category_id'])) {
                 $questions->where('tag_category_id', $inputs['tag_category_id']);
             }
-            $questions = $questions->orderBy('created_at', 'desc')->get();
+            $questions = $questions->latest()->get();
         } else {
             $questions = $this->all()->sortByDesc('created_at');
         }
@@ -57,7 +57,7 @@ class Question extends Model
 
     public function scopeSearchingUserQuestion($query, $userId)
     {
-        return $query->where('user_id', $userId)->orderBy('created_at', 'desc');
+        return $query->where('user_id', $userId)->latest();
     }
 }
 
