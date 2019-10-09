@@ -19,7 +19,7 @@
       @foreach($categories as $category)
         <div class="btn @if (isset($inputs['tag_category_id']) && $category->id == $inputs['tag_category_id']) selected @endif {{ $category->name }}" id="{{ $category->id }}">{{ $category->name }}</div>
       @endforeach
-      {!! Form::input('hidden', 'tag_category_id', null, ['id' => 'category-val']) !!}
+      {!! Form::input('hidden', 'tag_category_id', empty($inputs['tag_category_id']) ? null : $inputs['tag_category_id'], ['id' => 'category-val']) !!}
     </div>
   {!! Form::close() !!}
   <div class="content-wrapper table-responsive">
