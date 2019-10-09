@@ -9,7 +9,7 @@
     {!! Form::hidden('confirm', 'edit') !!}
     {!! Form::hidden('id', $question->id) !!}
       <div class="form-group {{ $errors->has('tag_category_id') ? 'has-error' : '' }}">
-        {!! Form::select('tag_category_id', ['Select category', 'front', 'back', 'infra', 'others'], $question->tag_category_id, ['class' => 'form-control selectpicker form-size-small', 'id' => 'pref_id']) !!}
+        {!! Form::select('tag_category_id', $categoryArray, $question->tag_category_id, ['class' => 'form-control selectpicker form-size-small', 'id' => 'pref_id']) !!}
         <span class="help-block">{{ $errors->first('tag_category_id') }}</span>
       </div>
       <div class="form-group {{ $errors->has('title') ? 'has-error' : '' }}">
