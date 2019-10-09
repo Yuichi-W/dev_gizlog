@@ -43,9 +43,9 @@
       <div class="comment-title">
         <img src="{{ Auth::user()->avatar }}" class="avatar-img"><p>コメントを投稿する</p>
       </div>
-      <div class="comment-body">
+      <div class="comment-body {{ $errors->has('comment') ? 'has-error' : '' }}">
         {!! Form::textarea('comment', null, ['class' => 'form-control', 'placeholder' => 'Add your comment...']) !!}
-        <span class="help-block"></span>
+        <span class="help-block">{{ $errors->first('comment') }}</span>
       </div>
       <div class="comment-bottom">
         {!! Form::button('<i class="fa fa-pencil" aria-hidden="true"></i>', ['type' => 'submit', 'class' => 'btn btn-success', 'aria-hidden' => 'true']) !!}
