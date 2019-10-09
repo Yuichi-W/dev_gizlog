@@ -6,6 +6,7 @@ use App\Models\Comment;
 use App\Models\TagCategory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Http\Controllers\User\QuestionController;
 
 class Question extends Model
 {
@@ -43,16 +44,14 @@ class Question extends Model
 
     public function scopeSearchingQuestion($query, $inputs)
     {
-        if(!empty($inputs)) {
+        $questions = $query;
+        if(!empty($inputs['search_word'])) {
             $questions = $query->where('title', 'like', '%' .$inputs['search_word']. '%');
-            if(!empty($inputs['tag_category_id'])) {
-                $questions->where('tag_category_id', $inputs['tag_category_id']);
-            }
-            $questions = $questions->latest()->get();
-        } else {
-            $questions = $this->all()->sortByDesc('created_at');
+        } 
+        if(!empty($inputs['tag_category_id'])) {
+            $questions = $query->where('tag_category_id', $inputs['tag_category_id']);
         }
-        return $questions;
+        return $questions->orderby('created_at', 'desc')->with(['user', 'tagCategory', 'comments']);
     }
 
     public function scopeSearchingUserQuestion($query, $userId)

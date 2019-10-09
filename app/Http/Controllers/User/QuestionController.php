@@ -16,6 +16,7 @@ class QuestionController extends Controller
     protected $question;
     protected $comment;
     protected $tagCategory;
+    const DEFAULT_SELECT = 'Select category';
 
     public function __construct(Question $question, Comment $comment, TagCategory $tagCategory) 
     {
@@ -34,7 +35,7 @@ class QuestionController extends Controller
     {
         $inputs = $request->all();
         $categories = $this->tagCategory->all();
-        $questions = $this->question->searchingQuestion($inputs);
+        $questions = $this->question->searchingQuestion($inputs)->get();
         return view('user.question.index', compact('inputs', 'categories', 'questions'));
     }
 
@@ -45,7 +46,9 @@ class QuestionController extends Controller
      */
     public function create()
     {
-        return view('user.question.create');
+        $categories = $this->tagCategory->all();
+        $categoryArray = $this->makeSelectValue($categories);
+        return view('user.question.create', compact('categoryArray'));
     }
 
     /**
@@ -56,6 +59,8 @@ class QuestionController extends Controller
      */
     public function store(QuestionsRequest $request)
     {
+        $userId = Auth::id();
+        $request['user_id'] = $userId;
         $inputs = $request->all();
         $this->question->create($inputs);
         return redirect()->route('question.index');
@@ -69,7 +74,7 @@ class QuestionController extends Controller
      */
     public function show($id)
     {
-        $question = $this->question->find($id);
+        $question = $this->question->with('comments.user')->find($id);
         return view('user.question.show', compact('question'));
     }
 
@@ -82,7 +87,9 @@ class QuestionController extends Controller
     public function edit($id)
     {
         $question = $this->question->find($id);
-        return view('user.question.edit', compact('question'));
+        $categories = $this->tagCategory->all();
+        $categoryArray = $this->makeSelectValue($categories);
+        return view('user.question.edit', compact('question', 'categoryArray'));
     }
 
     /**
@@ -129,9 +136,18 @@ class QuestionController extends Controller
      */
     public function mypage(Request $request)
     {
-        $questions = $this->question->searchingUserQuestion(Auth::id())->get();
+        $questions = $this->question->searchingUserQuestion(Auth::id())->with(['user', 'tagCategory', 'comments'])->get();
         $inputs = $request->all();
         $category = $this->tagCategory->all();
         return view('user.question.mypage', compact('inputs', 'category', 'questions'));
+    }
+
+    public function makeSelectValue($categories)
+    {
+        return $categories
+                    ->pluck('name', 'id')
+                    ->prepend(self::DEFAULT_SELECT, '')
+                    ->all();
+
     }
 }
