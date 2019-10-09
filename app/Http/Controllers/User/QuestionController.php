@@ -35,7 +35,7 @@ class QuestionController extends Controller
     {
         $inputs = $request->all();
         $categories = $this->tagCategory->all();
-        $questions = $this->question->searchingQuestion($inputs)->get();
+        $questions = $this->question->searchingQuestion($inputs)->paginate(5);
         return view('user.question.index', compact('inputs', 'categories', 'questions'));
     }
 
