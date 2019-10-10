@@ -6,7 +6,6 @@ use App\Models\Comment;
 use App\Models\TagCategory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Http\Controllers\User\QuestionController;
 
 class Question extends Model
 {
