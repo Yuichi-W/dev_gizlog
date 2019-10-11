@@ -7,7 +7,7 @@
     {!! Form::open(['route' => 'question.confirm']) !!}
     {!! Form::hidden('confirm', 'create') !!}
       <div class="form-group {{ $errors->has('tag_category_id') ? 'has-error' : '' }}">
-        {!! Form::select('tag_category_id',$categoryArray, 0, ['class' => 'form-control selectpicker form-size-small', 'id' => 'pref_id']) !!}
+        {!! Form::select('tag_category_id', $categoryArray, 0, ['class' => 'form-control selectpicker form-size-small', 'id' => 'pref_id']) !!}
         <span class="help-block">{{ $errors->first('tag_category_id') }}</span>
       </div>
       <div class="form-group {{ $errors->has('title') ? 'has-error' : '' }}">
