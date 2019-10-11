@@ -35,7 +35,8 @@ class QuestionController extends Controller
     {
         $inputs = $request->all();
         $categories = $this->tagCategory->all();
-        $questions = $this->question->searchingQuestion($inputs)->paginate(100);
+        $questions = $this->question->searchingQuestion($inputs)
+                                    ->paginate(100);
         return view('user.question.index', compact('inputs', 'categories', 'questions'));
     }
 
@@ -59,9 +60,8 @@ class QuestionController extends Controller
      */
     public function store(QuestionsRequest $request)
     {
-        $userId = Auth::id();
-        $request['user_id'] = $userId;
         $inputs = $request->all();
+        $inputs['user_id'] = Auth::id();
         $this->question->create($inputs);
         return redirect()->route('question.index');
     }
@@ -126,7 +126,9 @@ class QuestionController extends Controller
     public function confirm(QuestionsRequest $request)
     {
         $inputs = $request->all();
-        $categoryName = $this->tagCategory->find($request->tag_category_id)->name;
+        $categoryName = $this->tagCategory
+                             ->find($request->tag_category_id)
+                             ->name;
         return view('user.question.confirm', compact('inputs', 'categoryName'));
     }
 
@@ -136,7 +138,9 @@ class QuestionController extends Controller
      */
     public function mypage(Request $request)
     {
-        $questions = $this->question->searchingUserQuestion(Auth::id())->with(['user', 'tagCategory', 'comments'])->get();
+        $questions = $this->question->searchingUserQuestion(Auth::id())
+                                    ->with(['user', 'tagCategory', 'comments'])
+                                    ->get();
         $inputs = $request->all();
         $category = $this->tagCategory->all();
         return view('user.question.mypage', compact('inputs', 'category', 'questions'));
@@ -144,10 +148,7 @@ class QuestionController extends Controller
 
     public function makeSelectValue($categories)
     {
-        return $categories
-                    ->pluck('name', 'id')
-                    ->prepend(self::DEFAULT_SELECT, '')
-                    ->all();
-
+        return $categories->pluck('name', 'id')
+                          ->prepend(self::DEFAULT_SELECT, '');
     }
 }

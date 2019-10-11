@@ -41,16 +41,26 @@ class Question extends Model
         return $this->hasMany(Comment::class);
     }
 
-    public function scopeSearchingQuestion($query, $inputs)
+    public function searchingQuestion($inputs)
     {
-        $questions = $query;
-        if(!empty($inputs['search_word'])) {
-            $questions = $query->where('title', 'like', '%' .$inputs['search_word']. '%');
+        return $this->seachingWordQuestion($inputs)
+                    ->seachingCategoryQuestion($inputs)
+                    ->latest()
+                    ->with(['user', 'tagCategory', 'comments']);
+    }
+
+    public function scopeSeachingWordQuestion($query, $inputs)
+    {
+        if (!empty($inputs['search_word'])) {
+            $query->where('title', 'like', '%' .$inputs['search_word']. '%');
         } 
-        if(!empty($inputs['tag_category_id'])) {
-            $questions = $query->where('tag_category_id', $inputs['tag_category_id']);
-        }
-        return $questions->orderby('created_at', 'desc')->with(['user', 'tagCategory', 'comments']);
+    }
+
+    public function scopeSeachingCategoryQuestion($query, $inputs)
+    {
+        if (!empty($inputs['tag_category_id'])) {
+            $query->where('tag_category_id', $inputs['tag_category_id']);
+        } 
     }
 
     public function scopeSearchingUserQuestion($query, $userId)
