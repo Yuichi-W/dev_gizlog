@@ -21,14 +21,19 @@ Route::group(['prefix' => '/', 'user.', 'namespace' => 'User'], function () {
             return view('user.auth.login');
         }
     });
-
+    
     Route::get('slack/login', 'Auth\AuthenticateController@callSlackApi');
     Route::get('callback', 'Auth\AuthenticateController@loginBySlackUserInfo');
-
+    
     Route::post('/register', 'Auth\RegisterController@register');
     Route::get('/register/{query}', 'Auth\RegisterController@showRegistrationForm');
-
+    
     Route::get('home', 'UserController@index')->name('home');
+
+    Route::get('attendance', 'AttendanceController@index');
+    Route::get('attendance/absence', 'AttendanceController@absence');
+    Route::get('attendance/modify', 'AttendanceController@modify');
+    Route::get('attendance/mypage', 'AttendanceController@mypage');
 
     Route::resource('report', DailyReportController::class);
 
@@ -43,18 +48,18 @@ Route::group(['prefix' => '/', 'user.', 'namespace' => 'User'], function () {
      * 静的なページが簡単に確認できるように ClosureでViewを返しています。処理に応じて編集してください。
      * 尚、このコメントアウトはコード提出の際は削除してください。
      */
-    Route::get('attendance', function () {
-        return view('user.attendance.index');
-    });
-    Route::get('attendance/absence', function () {
-        return view('user.attendance.absence');
-    });
-    Route::get('attendance/modify', function () {
-        return view('user.attendance.modify');
-    });
-    Route::get('attendance/mypage', function () {
-        return view('user.attendance.mypage');
-    });
+    // Route::get('attendance', function () {
+    //     return view('user.attendance.index');
+    // });
+    // Route::get('attendance/absence', function () {
+    //     return view('user.attendance.absence');
+    // });
+    // Route::get('attendance/modify', function () {
+    //     return view('user.attendance.modify');
+    // });
+    // Route::get('attendance/mypage', function () {
+    //     return view('user.attendance.mypage');
+    // });
     /*
      * ---------------------------------------------------------
      */
