@@ -9,6 +9,9 @@ class Attendance extends Model
 {
     protected $fillable = [
         'user_id',
+        'date_time',
+        'start_time',
+        'end_time',
         'absent_reason',
         'revision_request',
     ];

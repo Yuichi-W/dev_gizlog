@@ -34,7 +34,8 @@ Route::group(['prefix' => '/', 'user.', 'namespace' => 'User'], function () {
     Route::get('attendance/absence', ['as' => 'attendance.absence.page', 'uses' => 'AttendanceController@absencePage']);
     Route::get('attendance/modify', ['as' => 'attendance.modify.page', 'uses' => 'AttendanceController@modifyPage']);
     Route::get('attendance/mypage', ['as' => 'attendance.mypage', 'uses' => 'AttendanceController@mypage']);
-    Route::post('attendance', ['as' => 'attendance.startTime', 'uses' => 'AttendanceController@startTime']);
+    Route::post('attendance', ['as' => 'attendance.startTime.register', 'uses' => 'AttendanceController@startTime']);
+    Route::put('attendance', ['as' => 'attendance.endTime.register', 'uses' => 'AttendanceController@endTime']);
     Route::post('attendance/absence', ['as' => 'attendance.absence', 'uses' => 'AttendanceController@absence']);
     Route::post('attendance/modify', ['as' => 'attendance.modify', 'uses' => 'AttendanceController@modify']);
 
