@@ -30,10 +30,13 @@ Route::group(['prefix' => '/', 'user.', 'namespace' => 'User'], function () {
     
     Route::get('home', 'UserController@index')->name('home');
 
-    Route::get('attendance', 'AttendanceController@index');
-    Route::get('attendance/absence', 'AttendanceController@absence');
-    Route::get('attendance/modify', 'AttendanceController@modify');
-    Route::get('attendance/mypage', 'AttendanceController@mypage');
+    Route::get('attendance', ['as' => 'attendance.index', 'uses' => 'AttendanceController@index']);
+    Route::get('attendance/absence', ['as' => 'attendance.absence.page', 'uses' => 'AttendanceController@absencePage']);
+    Route::get('attendance/modify', ['as' => 'attendance.modify.page', 'uses' => 'AttendanceController@modifyPage']);
+    Route::get('attendance/mypage', ['as' => 'attendance.mypage', 'uses' => 'AttendanceController@mypage']);
+    Route::post('attendance', ['as' => 'attendance.startTime', 'uses' => 'AttendanceController@startTime']);
+    Route::post('attendance/absence', ['as' => 'attendance.absence', 'uses' => 'AttendanceController@absence']);
+    Route::post('attendance/modify', ['as' => 'attendance.modify', 'uses' => 'AttendanceController@modify']);
 
     Route::resource('report', DailyReportController::class);
 
