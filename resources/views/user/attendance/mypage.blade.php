@@ -9,14 +9,14 @@
       <p>学習経過日数</p>
       <div class="study-hour-box clearfix">
         <div class="userinfo-box"><img src="https://avatars.slack-edge.com/2019-01-25/532734044915_486bec3294a9f7b34291_192.png"></div>
-        <p class="study-hour"><span>3</span>日</p>
+        <p class="study-hour"><span>{{ $dateSum }}</span>日</p>
       </div>
     </div>
     <div class="my-info">
       <p>累計学習時間</p>
       <div class="study-hour-box clearfix">
         <div class="userinfo-box"><img src="https://avatars.slack-edge.com/2019-01-25/532734044915_486bec3294a9f7b34291_192.png"></div>
-        <p class="study-hour"><span>18</span>時間</p>
+        <p class="study-hour"><span>{{ $attendanceHours }}</span>時間</p>
       </div>
     </div>
   </div>
@@ -32,34 +32,25 @@
         </tr>
       </thead>
       <tbody>
-      <tr class="row">
-        <td class="col-xs-2">07/01 (Mon)</td>
-        <td class="col-xs-3">08:29</td>
-        <td class="col-xs-3">19:30</td>
-        <td class="col-xs-2">出社</td>
-        <td class="col-xs-2">-</td>
-      </tr>
-      <tr class="row absent-row">
-        <td class="col-xs-2">07/02 (Tue)</td>
-        <td class="col-xs-3">-</td>
-        <td class="col-xs-3">-</td>
-        <td class="col-xs-2">欠席</td>
-        <td class="col-xs-2">-</td>
-      </tr>
-      <tr class="row">
-        <td class="col-xs-2">07/03 (Wed)</td>
-        <td class="col-xs-3">10:44</td>
-        <td class="col-xs-3">19:37</td>
-        <td class="col-xs-2">出社</td>
-        <td class="col-xs-2">申請中</td>
-      </tr>
-      <tr class="row">
-        <td class="col-xs-2">07/04 (Thr)</td>
-        <td class="col-xs-3">08:52</td>
-        <td class="col-xs-3">-</td>
-        <td class="col-xs-2">研修中</td>
-        <td class="col-xs-2">-</td>
-      </tr>
+        @foreach($attendances as $attendance)
+          <tr class="row">
+            <td class="col-xs-2">{{ $attendance->date_time->format('m/d (D)') }}</td>
+            <td class="col-xs-3">{{ empty($attendance->start_time) ? '-' : $attendance->start_time->format('H:h') }}</td>
+            <td class="col-xs-3">{{ empty($attendance->end_time) ? '-' : $attendance->end_time->format('H:h') }}</td>
+            <td class="col-xs-2">
+              @if (isset($attendance->start_time) && isset($attendance->start_time))
+                出社
+              @elseif ($attendance->absent_status === 1)
+                欠席
+              @elseif (isset($attendance->start_time) && !isset($attendance->end_time))
+                研修中
+              @else
+                -
+              @endif 
+            </td>
+            <td class="col-xs-2">{{ ($attendance->revision_status == 0) ? '-' : '申請中' }}</td>
+          </tr>
+        @endforeach
       </tbody>
     </table>
   </div>
