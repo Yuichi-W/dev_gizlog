@@ -43,7 +43,7 @@ class User extends Authenticatable
 
     public function allAttendance()
     {
-        return $this->hasMany(Attendance::class, 'user_id')->orderBy('date', 'desc');
+        return $this->hasMany(Attendance::class, 'user_id')->orderBy('date_time', 'desc');
     }
 
     public function createUserInstance($slackId)

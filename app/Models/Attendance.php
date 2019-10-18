@@ -17,10 +17,16 @@ class Attendance extends Model
         'date_time',
         'start_time',
         'end_time',
+        'deleted_at',
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function fetchUserAttendances($id)
+    {
+        return $this->where('user_id', $id)->orderBy('date_time', 'desc');
     }
 }
