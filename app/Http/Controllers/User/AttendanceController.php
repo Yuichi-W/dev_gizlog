@@ -21,61 +21,104 @@ class AttendanceController extends Controller
         $this->user = $user;
     }
 
+    /**
+      * Display a listing of the resource.
+      *
+      * @param  \Illuminate\Http\Request  $request
+      * @return \Illuminate\Http\Response
+      */
     public function index(Request $request)
     {
         $userId = Auth::id();
         $today = Carbon::now()->format('Y-m-d');
         $attendance = $this->attendance->where('user_id', $userId)->where('date_time', $today)->first();
-        // dd($attendance);
         return view('user.attendance.index', compact('attendance'));
     }
 
+    /**
+      * Store a newly created resource in storage.
+      *
+      * @param  \Illuminate\Http\Request  $request
+      * @return \Illuminate\Http\Response
+      */
     public function startTime(Request $request)
     {
         $inputs = $request->all();
-        // dd($inputs);
         $inputs['user_id'] = Auth::id();
         $inputs['absent_status'] = 0;
-        // dd($inputs);
-        // dd($this->attendance->timestamps);
-        $this->attendance->timestamps = false;
         $this->attendance->fill($inputs)->save();
         return redirect()->route('attendance.index');
     }
 
+    /**
+      * Store a newly created resource in storage.
+      *
+      * @param  \Illuminate\Http\Request  $request
+      * @return \Illuminate\Http\Response
+      */
     public function endTime(Request $request, $id)
     {
         $inputs = $request->all();
-        dd($inputs);
-        // $this->attendance->timestamps = false;
-        $this->attendance->find($id)->fill($inputs)->save();
+        $idAttendance = $this->attendance->find($id);
+        $idAttendance->fill($inputs)->save();
         return redirect()->route('attendance.index');
     }
 
-    public function absencePage()
+    /**
+     * @param $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function absencePage($id = null)
     {
-        return view('user.attendance.absence');
+        $attendance = $this->attendance->find($id);
+        return view('user.attendance.absence', compact('attendance'));
     }
 
+    /**
+     * @param AttendanceRequest $request
+     * 
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function absence(AttendanceRequest $request)
     {
         $inputs = $request->all();
-        $this->attendance->create($inputs);
+        $inputs['user_id'] = Auth::id();
+        if (!empty($inputs['id'])) {
+            $this->attendance->find($inputs['id'])->fill($inputs)->save();
+        } else {
+            $this->attendance->fill($inputs)->save();
+        }
         return redirect()->route('attendance.index');
     }
 
-    public function modifyPage()
+    /**
+     * @param $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function modifyPage($id)
     {
-        return view('user.attendance.modify');
+        $attendance = $this->attendance->find($id);
+        return view('user.attendance.modify', compact('attendance'));
     }
 
+    /**
+     * @param AttendanceRequest $request
+     * 
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function modify(AttendanceRequest $request)
     {
         $inputs = $request->all();
-        $this->attendance->create($inputs);
+        $inputs['user_id'] = Auth::id();
+        $this->attendance->find($inputs['id'])->fill($inputs)->save();
         return redirect()->route('attendance.index');
     }
 
+     /**
+     * @param AttendanceRequest $request
+     * 
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function mypage(Request $request)
     {
         $userId = Auth::id();
