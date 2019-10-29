@@ -23,6 +23,7 @@ class CreateAttendancesTable extends Migration
             $table->string('absent_reason', 500)->nullable();
             $table->integer('revision_status')->default(0);
             $table->string('revision_request', 500)->nullable();
+            $table->timestamps();
             $table->softDeletes();
         });
     }

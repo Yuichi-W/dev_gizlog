@@ -33,12 +33,12 @@
       </thead>
       <tbody>
         @foreach($attendances as $attendance)
-          <tr class="row">
+          <tr class="@if ($attendance->absent_status === 1) row absent-row @else row @endif">
             <td class="col-xs-2">{{ $attendance->date_time->format('m/d (D)') }}</td>
             <td class="col-xs-3">{{ empty($attendance->start_time) ? '-' : $attendance->start_time->format('H:h') }}</td>
             <td class="col-xs-3">{{ empty($attendance->end_time) ? '-' : $attendance->end_time->format('H:h') }}</td>
             <td class="col-xs-2">
-              @if (isset($attendance->start_time) && isset($attendance->start_time))
+              @if (isset($attendance->start_time) && isset($attendance->end_time))
                 出社
               @elseif ($attendance->absent_status === 1)
                 欠席

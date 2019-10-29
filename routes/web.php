@@ -31,13 +31,13 @@ Route::group(['prefix' => '/', 'user.', 'namespace' => 'User'], function () {
     Route::get('home', 'UserController@index')->name('home');
 
     Route::get('attendance', ['as' => 'attendance.index', 'uses' => 'AttendanceController@index']);
-    Route::get('attendance/absence', ['as' => 'attendance.absence.page', 'uses' => 'AttendanceController@absencePage']);
-    Route::get('attendance/modify', ['as' => 'attendance.modify.page', 'uses' => 'AttendanceController@modifyPage']);
+    Route::get('attendance/absence/{id}', ['as' => 'attendance.absence.page', 'uses' => 'AttendanceController@absencePage']);
+    Route::get('attendance/modify/{id}', ['as' => 'attendance.modify.page', 'uses' => 'AttendanceController@modifyPage']);
     Route::get('attendance/mypage', ['as' => 'attendance.mypage', 'uses' => 'AttendanceController@mypage']);
-    Route::post('attendance', ['as' => 'attendance.startTime.register', 'uses' => 'AttendanceController@startTime']);
-    Route::put('attendance', ['as' => 'attendance.endTime.register', 'uses' => 'AttendanceController@endTime']);
+    Route::post('attendance/register', ['as' => 'attendance.startTime.register', 'uses' => 'AttendanceController@startTime']);
+    Route::put('attendance/{id}/register', ['as' => 'attendance.endTime.register', 'uses' => 'AttendanceController@endTime']);
     Route::post('attendance/absence', ['as' => 'attendance.absence', 'uses' => 'AttendanceController@absence']);
-    Route::post('attendance/modify', ['as' => 'attendance.modify', 'uses' => 'AttendanceController@modify']);
+    Route::put('attendance/modify', ['as' => 'attendance.modify', 'uses' => 'AttendanceController@modify']);
 
     Route::resource('report', DailyReportController::class);
 
@@ -46,27 +46,6 @@ Route::group(['prefix' => '/', 'user.', 'namespace' => 'User'], function () {
     Route::post('question/{id}/confirm', ['as' => 'confirm.update', 'uses' => 'QuestionController@confirm']);
     Route::post('question/{id}/comment', ['as' => 'question.comment', 'uses' => 'QuestionController@storeComment']);
     Route::resource('question', QuestionController::class);
-
-    /* 
-     * ----------------------------------------------------------
-     * 静的なページが簡単に確認できるように ClosureでViewを返しています。処理に応じて編集してください。
-     * 尚、このコメントアウトはコード提出の際は削除してください。
-     */
-    // Route::get('attendance', function () {
-    //     return view('user.attendance.index');
-    // });
-    // Route::get('attendance/absence', function () {
-    //     return view('user.attendance.absence');
-    // });
-    // Route::get('attendance/modify', function () {
-    //     return view('user.attendance.modify');
-    // });
-    // Route::get('attendance/mypage', function () {
-    //     return view('user.attendance.mypage');
-    // });
-    /*
-     * ---------------------------------------------------------
-     */
 
 });
 
