@@ -8,14 +8,14 @@
     <div class="my-info day-info">
       <p>学習経過日数</p>
       <div class="study-hour-box clearfix">
-        <div class="userinfo-box"><img src="https://avatars.slack-edge.com/2019-01-25/532734044915_486bec3294a9f7b34291_192.png"></div>
+        <div class="userinfo-box"><img src="{{ Auth::user()->avatar }}"></div>
         <p class="study-hour"><span>{{ $dateSum }}</span>日</p>
       </div>
     </div>
     <div class="my-info">
       <p>累計学習時間</p>
       <div class="study-hour-box clearfix">
-        <div class="userinfo-box"><img src="https://avatars.slack-edge.com/2019-01-25/532734044915_486bec3294a9f7b34291_192.png"></div>
+        <div class="userinfo-box"><img src="{{ Auth::user()->avatar }}"></div>
         <p class="study-hour"><span>{{ $attendanceHours }}</span>時間</p>
       </div>
     </div>
