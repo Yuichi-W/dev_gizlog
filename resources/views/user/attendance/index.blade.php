@@ -17,7 +17,7 @@
       <a class="button start-btn" id="register-attendance" href=#openModal>出社時間登録</a>
     @elseif ($attendance['absent_status'] === 1)
     <a class="button disabled" href="">欠席</a>
-    @elseif (!empty($attendance->start_time) && empty($attendance['absent_status'] === 0))
+    @elseif (!empty($attendance->start_time) && empty($attendance['absent_status']))
       <a class="button end-btn" id="register-attendance" href=#openModal>退社時間登録</a>
     @elseif (!empty($attendance->start_time) && !empty($attendance->end_time))
     <a class="button disabled" href="">退社済み</a>
