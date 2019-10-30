@@ -17,7 +17,7 @@ class AttendancesTableSeeder extends Seeder
 
             [
                 'user_id' => 1,
-                'date_time' => Carbon::create('2019', '10', '01'),
+                'date' => Carbon::create('2019', '10', '01'),
                 'start_time' => Carbon::create('2019', '10', '01', '09', '45', '00'),
                 'end_time' => Carbon::create('2019', '10', '01', '19', '05', '00'),
                 'absent_status' => 0,
@@ -27,7 +27,7 @@ class AttendancesTableSeeder extends Seeder
             ],
             [
                 'user_id' => 2,
-                'date_time' => Carbon::create('2019', '10', '02'),
+                'date' => Carbon::create('2019', '10', '02'),
                 'start_time' => Carbon::create('2019', '10', '02', '10', '15', '20'),
                 'end_time' => Carbon::create('2019', '10', '02', '19', '25', '10'),
                 'absent_status' => 0,
@@ -37,7 +37,7 @@ class AttendancesTableSeeder extends Seeder
             ],
             [
                 'user_id' => 3,
-                'date_time' => Carbon::create('2019', '09', '22'),
+                'date' => Carbon::create('2019', '09', '22'),
                 'start_time' => Carbon::create('2019', '09', '22', '09', '15', '20'),
                 'end_time' => null,
                 'absent_status' => 0,
@@ -47,7 +47,7 @@ class AttendancesTableSeeder extends Seeder
             ],
             [
                 'user_id' => 1,
-                'date_time' => Carbon::create('2019', '10', '05'),
+                'date' => Carbon::create('2019', '10', '05'),
                 'start_time' => Carbon::create('2019', '10', '05', '09', '35', '50'),
                 'end_time' => null,
                 'absent_status' => 0,
@@ -57,7 +57,7 @@ class AttendancesTableSeeder extends Seeder
             ],
             [
                 'user_id' => 4,
-                'date_time' => Carbon::create('2019', '10', '02'),
+                'date' => Carbon::create('2019', '10', '02'),
                 'start_time' => null,
                 'end_time' => null,
                 'absent_status' => 1,
@@ -67,7 +67,7 @@ class AttendancesTableSeeder extends Seeder
             ],
             [
                 'user_id' => 2,
-                'date_time' => Carbon::create('2019', '10', '02'),
+                'date' => Carbon::create('2019', '10', '02'),
                 'start_time' => null,
                 'end_time' => null,
                 'absent_status' => 1,
@@ -77,13 +77,33 @@ class AttendancesTableSeeder extends Seeder
             ],
             [
                 'user_id' => 4,
-                'date_time' => Carbon::create('2019', '10', '15'),
+                'date' => Carbon::create('2019', '10', '15'),
                 'start_time' => Carbon::create('2019', '10', '15', '09', '45', '10'),
                 'end_time' => Carbon::create('2019', '10', '15', '21', '15', '10'),
                 'absent_status' => 0,
                 'absent_reason' => null,
                 'revision_status' => 1,
                 'revision_request' => '課題締め切り日が近いため残業しました',
+            ],
+            [
+                'user_id' => 4,
+                'date' => Carbon::create('2019', '10', '15'),
+                'start_time' => Carbon::create('2019', '10', '25', '09', '25', '10'),
+                'end_time' => Carbon::create('2019', '10', '25', '19', '15', '10'),
+                'absent_status' => 0,
+                'absent_reason' => null,
+                'revision_status' => 1,
+                'revision_request' => '早く来すぎました',
+            ],
+            [
+                'user_id' => 4,
+                'date' => Carbon::create('2019', '10', '15'),
+                'start_time' => Carbon::create('2019', '10', '27', '10', '00', '10'),
+                'end_time' => Carbon::create('2019', '10', '27', '19', '35', '10'),
+                'absent_status' => 0,
+                'absent_reason' => null,
+                'revision_status' => 1,
+                'revision_request' => '10秒の遅刻',
             ],
         ]);
     }
