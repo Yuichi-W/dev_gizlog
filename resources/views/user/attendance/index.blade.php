@@ -42,12 +42,9 @@
     <div class="register-btn-wrap">
       @if (empty($attendance))
         {!! Form::open(['route' => 'attendance.startTime.register', 'method' => 'POST']) !!}
-        {!! Form::hidden('start_time', null, ['id' => 'date-time-target']) !!}
       @else
         {!! Form::open(['route' => ['attendance.endTime.register', $attendance->id], 'method' => 'PUT']) !!}
-        {!! Form::hidden('end_time', null, ['id' => 'date-time-target']) !!}
       @endif
-        {!! Form::hidden('date_time', Carbon::now()->format('Y-m-d')) !!}
         <a href="#close" class="cancel-btn">Cancel</a>
         {!! Form::submit('Yes', ['class' => 'yes-btn']) !!}
       {!! Form::close() !!}
