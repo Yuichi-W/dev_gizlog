@@ -56,7 +56,6 @@ class AttendanceController extends Controller
      */
     public function absencePage($id = null)
     {
-        dd($id);
         $attendance = $this->attendance->find($id);
         return view('user.attendance.absence', compact('attendance'));
     }
