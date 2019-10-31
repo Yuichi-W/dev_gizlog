@@ -8,8 +8,7 @@ use Carbon\Carbon;
 
 class Attendance extends Model
 {
-
-    const INITIAL＿MINUTES = 0;
+    const INITIAL_MINUTES = 0;
     const IS_NOT_ABSENT = 0;
     const IS_ABSENT = 1;
     const IS_NOT_REVISION = 0;
@@ -59,71 +58,72 @@ class Attendance extends Model
     public function registrerEndTime($id)
     {
         $nowTime = Carbon::now();
-        return $this->find($id)->update([
-            'end_time' => $nowTime
-        ]);
+        if ($this->find($id)->date->isToday()) {
+            return $this->find($id)->update([
+                'end_time' => $nowTime
+            ]);
+        }
     }
 
-    public function absentAttendance($inputs)
+    public function absentAttendance($data)
     {
-        $inputs['user_id'] = Auth::id();
-        $inputs['date'] =  Carbon::now()->format('Y-m-d');
-        $inputs['absent_status'] = self::IS_ABSENT;
-        if (!empty($inputs['id'])) {
-            $absentAttendance = $this->updateAbsentAttendance($inputs);
+        $data['user_id'] = Auth::id();
+        $data['date'] =  Carbon::now()->format('Y-m-d');
+        $data['absent_status'] = self::IS_ABSENT;
+        if (!empty($data['id'])) {
+            $absentAttendance = $this->updateAbsentAttendance($data);
         } else {
-            $absentAttendance = $this->attendance->fill($inputs)->save();
+            $absentAttendance = $this->attendance->fill($data)->save();
         }
         return $absentAttendance;
     }
 
-    public function updateAbsentAttendance($inputs)
+    public function updateAbsentAttendance($data)
     {
         return $this->where([
-            'date' => $inputs['date'], 
-            'user_id' => $inputs['user_id']
+            'date' => $data['date'], 
+            'user_id' => $data['user_id']
         ])->update([
-            'absent_status' => $inputs['absent_status'],
-            'absent_reason' => $inputs['absent_reason']
+            'absent_status' => $data['absent_status'],
+            'absent_reason' => $data['absent_reason']
         ]);
     }
 
-    public function updateModifyAttendance($inputs)
+    public function updateModifyAttendance($data)
     {
-        $inputs['user_id'] = Auth::id();
-        $inputs['revision_status'] = self::IS_REVISION;
+        $data['user_id'] = Auth::id();
+        $data['revision_status'] = self::IS_REVISION;
         return $this->where([
-                'date' => $inputs['date'], 
-                'user_id' => $inputs['user_id']
+                'date' => $data['date'], 
+                'user_id' => $data['user_id']
             ])->update([
-                'revision_status' => $inputs['revision_status'],
-                'revision_request' => $inputs['revision_request']
+                'revision_status' => $data['revision_status'],
+                'revision_request' => $data['revision_request']
             ]);
     }
 
-    public function fetchAttendance($id)
+    public function fetchAttendance($userId)
     {
-        return $this->fetchUserAttendances($id)
+        return $this->fetchUserAttendances($userId)
             ->whereNotNull('start_time')
             ->whereNotNull('end_time');
     }
 
-    public function fetchUserAttendances($id)
+    public function fetchUserAttendances($userId)
     {
-        return $this->where('user_id', $id)->orderBy('date', 'desc');
+        return $this->where('user_id', $userId)->orderBy('date', 'desc');
     }
 
     public function attendanceTotalMinutes($attendances)
     {
-        $attendanceMinutesTotal = self::INITIAL＿MINUTES;
-        foreach ($attendances as $attendance)
-        {
-            if (isset($attendance->start_time) && isset($attendance->end_time)) {
+        $attendanceTotalMinutes = self::INITIAL_MINUTES;
+        foreach ($attendances as $attendance) {
+            if (!empty($attendance->start_time) && !empty($attendance->end_time)) {
                 $attendanceMinutes = $attendance->start_time
-                    ->diffInminutes($attendance->end_time);
-                $attendanceMinutesTotal += $attendanceMinutes;
+                    ->diffInMinutes($attendance->end_time);
+                $attendanceTotalMinutes += $attendanceMinutes;
             }
         }
-        return $attendanceMinutesTotal;
+        return $attendanceTotalMinutes;
     }
 }

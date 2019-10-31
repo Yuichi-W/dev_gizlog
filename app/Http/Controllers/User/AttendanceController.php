@@ -56,6 +56,7 @@ class AttendanceController extends Controller
      */
     public function absencePage($id = null)
     {
+        dd($id);
         $attendance = $this->attendance->find($id);
         return view('user.attendance.absence', compact('attendance'));
     }
@@ -96,15 +97,14 @@ class AttendanceController extends Controller
 
      /**
      * 
-     * @return \Illuminate\Http\RedirectResponse
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function mypage()
     {
         $userId = Auth::id();
         $attendances = $this->attendance->fetchUserAttendances($userId)->get();
         $dateSum = $this->attendance->fetchAttendance($userId)->count();
-        $attendanceMinutesTotal = $this->attendance->attendanceTotalMinutes($attendances); 
-        $attendanceHours = round($attendanceMinutesTotal/60);
+        $attendanceHours = round($this->attendance->attendanceTotalMinutes($attendances)/60); 
         return view('user.attendance.mypage', compact('attendances', 'dateSum', 'attendanceHours'));
     }
 }
