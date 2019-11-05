@@ -106,7 +106,8 @@ class AttendanceController extends Controller
     {
         $userId = Auth::id();
         $attendances = $this->attendance->fetchUserAttendances($userId)->get();
-        $attendanceMypage = $this->attendance->fetchUserAttendances($userId)->paginate(self::MAX_PAGE);
+        $attendanceMypage = $this->attendance->fetchUserAttendances($userId)
+            ->paginate(self::MAX_PAGE);
         $dateSum = $this->attendance->fetchAttendance($userId)->count();
         $attendanceHours = round($this->attendance->attendanceTotalMinutes($attendances)/60); 
         return view('user.attendance.mypage', compact('attendanceMypage', 'dateSum', 'attendanceHours'));

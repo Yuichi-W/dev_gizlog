@@ -125,10 +125,10 @@ class Attendance extends Model
         $this->where([
             'date' => $data['date'], 
             'user_id' => $data['user_id']
-            ])->update([
-                'revision_status' => $data['revision_status'],
-                'revision_request' => $data['revision_request']
-            ]);
+        ])->update([
+            'revision_status' => $data['revision_status'],
+            'revision_request' => $data['revision_request']
+        ]);
     }
 
     /**
