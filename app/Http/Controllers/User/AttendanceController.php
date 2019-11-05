@@ -18,9 +18,9 @@ class AttendanceController extends Controller
     }
 
     /**
-      * Display a listing of the resource.
+      * 関数概要 : indexページへ遷移
       *
-      * @return \Illuminate\Http\Response
+      * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
       */
     public function index()
     {
@@ -29,7 +29,7 @@ class AttendanceController extends Controller
     }
 
     /**
-      * Store a newly created resource in storage.
+      * 関数概要 : 出社時間の登録
       *
       * @return \Illuminate\Http\Response
       */
@@ -40,9 +40,9 @@ class AttendanceController extends Controller
     }
 
     /**
-      * Store a newly created resource in storage.
-      *
-      * @return \Illuminate\Http\Response
+      * 関数概要 : 退社時間の登録
+      * @param $id
+      * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
       */
     public function registerAttendanceEndTime($id)
     {
@@ -51,6 +51,7 @@ class AttendanceController extends Controller
     }
 
     /**
+     * 関数概要 : absenceページへ遷移
      * @param $id
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
@@ -61,9 +62,9 @@ class AttendanceController extends Controller
     }
 
     /**
+     * 関数概要 : 欠席の登録
      * @param AttendanceRequest $request
-     * 
-     * @return \Illuminate\Http\RedirectResponse
+     * @return @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
      */
     public function absence(AttendanceRequest $request)
     {
@@ -73,6 +74,7 @@ class AttendanceController extends Controller
     }
 
     /**
+     * 関数概要 : modifyページへの遷移
      * @param $id
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
@@ -83,9 +85,9 @@ class AttendanceController extends Controller
     }
 
     /**
+     * 関数概要 : 修正申請の登録
      * @param AttendanceRequest $request
-     * 
-     * @return \Illuminate\Http\RedirectResponse
+     * @return @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
      */
     public function modify(AttendanceRequest $request)
     { 
@@ -95,7 +97,7 @@ class AttendanceController extends Controller
     }
 
      /**
-     * 
+     * 関数概要 : mypageへの遷移＆ユーザーの勤怠レコード＆合計出社日数＆累計学習時間の取得
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function mypage()
