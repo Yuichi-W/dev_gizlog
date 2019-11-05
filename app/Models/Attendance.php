@@ -46,7 +46,6 @@ class Attendance extends Model
     {
         $userId = Auth::id();
         $today = Carbon::now()->format('Y-m-d');
-        // dd($this->where('user_id', $userId)->where('date', $today)->first());
         return $this->where('user_id', $userId)->where('date', $today)->first();
     }
 
