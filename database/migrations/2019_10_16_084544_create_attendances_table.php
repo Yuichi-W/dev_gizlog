@@ -17,8 +17,8 @@ class CreateAttendancesTable extends Migration
             $table->increments('id');
             $table->integer('user_id');
             $table->date('date')->nullable();
-            $table->dateTime('start_time')->nullable();
-            $table->dateTime('end_time')->nullable();
+            $table->datetime('start_time')->nullable();
+            $table->datetime('end_time')->nullable();
             $table->integer('absent_status')->default(0);
             $table->string('absent_reason', 500)->nullable();
             $table->integer('revision_status')->default(0);

@@ -87,7 +87,7 @@ class AttendancesTableSeeder extends Seeder
             ],
             [
                 'user_id' => 4,
-                'date' => Carbon::create('2019', '10', '15'),
+                'date' => Carbon::create('2019', '10', '25'),
                 'start_time' => Carbon::create('2019', '10', '25', '09', '25', '10'),
                 'end_time' => Carbon::create('2019', '10', '25', '19', '15', '10'),
                 'absent_status' => 0,
@@ -97,7 +97,7 @@ class AttendancesTableSeeder extends Seeder
             ],
             [
                 'user_id' => 4,
-                'date' => Carbon::create('2019', '10', '15'),
+                'date' => Carbon::create('2019', '10', '27'),
                 'start_time' => Carbon::create('2019', '10', '27', '10', '00', '10'),
                 'end_time' => Carbon::create('2019', '10', '27', '19', '35', '10'),
                 'absent_status' => 0,
