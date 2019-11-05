@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Auth;
 
 class AttendanceController extends Controller
 {
+    const MAX_PAGE = 10;
+
     protected $attendance;
 
     public function __construct(Attendance $attendance)
@@ -104,8 +106,9 @@ class AttendanceController extends Controller
     {
         $userId = Auth::id();
         $attendances = $this->attendance->fetchUserAttendances($userId)->get();
+        $attendanceMypage = $this->attendance->fetchUserAttendances($userId)->paginate(self::MAX_PAGE);
         $dateSum = $this->attendance->fetchAttendance($userId)->count();
         $attendanceHours = round($this->attendance->attendanceTotalMinutes($attendances)/60); 
-        return view('user.attendance.mypage', compact('attendances', 'dateSum', 'attendanceHours'));
+        return view('user.attendance.mypage', compact('attendanceMypage', 'dateSum', 'attendanceHours'));
     }
 }
