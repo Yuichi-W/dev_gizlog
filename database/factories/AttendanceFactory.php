@@ -40,7 +40,7 @@ $factory->state(Attendance::class, 'absent', function(Faker $faker) {
 
 $factory->state(Attendance::class, 'modify', function(Faker $faker) {
     return [
-    'revision_status' => 1,
+    'revision_status'  => 1,
     'revision_request' => $faker->randomElement(['出勤登録を間違えました、10時出訂正おねがします。', '電車遅延したため遅れました', '道端のお婆さん助けてました']),
     ];
 });
