@@ -38,7 +38,7 @@ class Attendance extends Model
     }
 
     /**
-     * ユーザーの最新の勤怠レコードの取得。
+     * ユーザーの今日の勤怠レコードの取得。
      * @param int $userId
      * @return Attendance
      */
