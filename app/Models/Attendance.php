@@ -55,12 +55,10 @@ class Attendance extends Model
      */
     public function registerStartTime()
     {
-        $nowTime = Carbon::now();
-        $today = $nowTime->format('Y-m-d');
         $this->create([
             'user_id' => Auth::id(),
-            'date' => $today,
-            'start_time' => $nowTime
+            'date' => Carbon::now()->format('Y-m-d'),
+            'start_time' => Carbon::now()
         ]);
     }
 
@@ -71,10 +69,9 @@ class Attendance extends Model
      */
     public function registerEndTime($id)
     {
-        $nowTime = Carbon::now();
         if ($this->find($id)->date->isToday()) {
             $this->find($id)->update([
-                'end_time' => $nowTime
+                'end_time' => Carbon::now()
             ]);
         }
     }
