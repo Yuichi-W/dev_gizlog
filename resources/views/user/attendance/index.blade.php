@@ -13,22 +13,22 @@
     </div>
   </div>
   <div class="button-holder">
-    @if (empty($attendance))
+    @if (empty($attendances))
       <a class="button start-btn" id="register-attendance" href=#openModal>出社時間登録</a>
-    @elseif ($attendance['absent_status'] === 1)
+    @elseif ($attendances['absent_status'] === 1)
     <a class="button disabled" href="">欠席</a>
-    @elseif (!empty($attendance->start_time) && empty($attendance->end_time) && empty($attendance['absent_status']))
+    @elseif (!empty($attendances->start_time) && empty($attendances->end_time) && empty($attendances['absent_status']))
       <a class="button end-btn" id="register-attendance" href=#openModal>退社時間登録</a>
-    @elseif (!empty($attendance->start_time) && !empty($attendance->end_time))
+    @elseif (!empty($attendances->start_time) && !empty($attendances->end_time))
     <a class="button disabled" href="">退社済み</a>
     @endif
   </div>
   <ul class="button-wrap">
     <li>
-      <a class="at-btn absence" href="{{ route('attendance.absence.page', (empty($attendance)) ?: $attendance->id ) }}">欠席登録</a>
+      <a class="at-btn absence" href="{{ route('attendance.absence.page', (empty($attendances)) ?: $attendances->id ) }}">欠席登録</a>
     </li>
     <li>
-      <a class="at-btn modify" href="{{ route('attendance.modify.page', (empty($attendance)) ?: $attendance->id ) }}">修正申請</a>
+      <a class="at-btn modify" href="{{ route('attendance.modify.page', (empty($attendances)) ?: $attendances->id ) }}">修正申請</a>
     </li>
     <li>
       <a class="at-btn my-list" href="/attendance/mypage">マイページ</a>
@@ -40,10 +40,10 @@
   <div>
     <div class="register-text-wrap"><p>フェイク</p></div>
     <div class="register-btn-wrap">
-      @if (empty($attendance))
+      @if (empty($attendances))
         {!! Form::open(['route' => 'attendance.startTime.register', 'method' => 'POST']) !!}
       @else
-        {!! Form::open(['route' => ['attendance.endTime.register', $attendance->id], 'method' => 'PUT']) !!}
+        {!! Form::open(['route' => ['attendance.endTime.register', $attendances->id], 'method' => 'PUT']) !!}
       @endif
         <a href="#close" class="cancel-btn">Cancel</a>
         {!! Form::submit('Yes', ['class' => 'yes-btn']) !!}
