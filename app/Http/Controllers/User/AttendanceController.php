@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Attendance;
 use App\Http\Requests\User\AttendanceRequest;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class AttendanceController extends Controller
 {
@@ -26,7 +27,8 @@ class AttendanceController extends Controller
       */
     public function index()
     {
-        $attendances = $this->attendance->fetchTodayUserAttendance();
+        $today = Carbon::now()->format('Y-m-d');
+        $attendances = $this->attendance->fetchSelectDayUserAttendance($today)->first();
         return view('user.attendance.index', compact('attendances'));
     }
 

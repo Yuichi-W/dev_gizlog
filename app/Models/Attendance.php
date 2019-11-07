@@ -42,11 +42,10 @@ class Attendance extends Model
      * @param int $userId
      * @return Attendance
      */
-    public function fetchTodayUserAttendance()
+    public function fetchSelectDayUserAttendance($day)
     {
         $userId = Auth::id();
-        $today = Carbon::now()->format('Y-m-d');
-        return $this->where('user_id', $userId)->where('date', $today)->first();
+        return $this->where('user_id', $userId)->where('date', $day);
     }
 
     /**
@@ -87,7 +86,8 @@ class Attendance extends Model
      */
     public function absentAttendance($data)
     {
-        $todayAttendance = $this->fetchTodayUserAttendance();
+        $today = Carbon::now()->format('Y-m-d');
+        $todayAttendance = $this->fetchSelectDayUserAttendance($today);
         $data['absent_status'] = self::IS_ABSENT;
         if (!empty($todayAttendance)) {
             $this->updateAbsentAttendance($todayAttendance, $data);
@@ -118,9 +118,9 @@ class Attendance extends Model
      */
     public function updateModifyAttendance($data)
     {
-        $todayAttendance = $this->fetchTodayUserAttendance();
+        $selectDayAttendance = $this->fetchSelectDayUserAttendance($data['date']);
         $data['revision_status'] = self::IS_REVISION;
-        $todayAttendance->update([
+        $selectDayAttendance->update([
             'revision_status' => $data['revision_status'],
             'revision_request' => $data['revision_request']
         ]);
