@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 class AttendanceController extends Controller
 {
-    const MAX_PAGE = 10;
+    const PER_PAGE = 10;
 
     protected $attendance;
 
@@ -20,63 +20,63 @@ class AttendanceController extends Controller
     }
 
     /**
-      * 関数概要 : indexページへ遷移
+      * indexページへ遷移
       *
       * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
       */
     public function index()
     {
-        $attendance = $this->attendance->fetchTodayUserAttendance();
-        return view('user.attendance.index', compact('attendance'));
+        $attendances = $this->attendance->fetchTodayUserAttendance();
+        return view('user.attendance.index', compact('attendances'));
     }
 
     /**
-      * 関数概要 : 出社時間の登録
+      * 出社時間の登録
       *
       * @return \Illuminate\Http\Response
       */
     public function registerAttendanceStartTime()
     {
-        $this->attendance->registrerStartTime();
+        $this->attendance->registerStartTime();
         return redirect()->route('attendance.index');
     }
 
     /**
-      * 関数概要 : 退社時間の登録
+      * 退社時間の登録
       * @param $id
       * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
       */
     public function registerAttendanceEndTime($id)
     {
-        $this->attendance->registrerEndTime($id);
+        $this->attendance->registerEndTime($id);
         return redirect()->route('attendance.index');
     }
 
     /**
-     * 関数概要 : absenceページへ遷移
+     * 欠席登録ページへ遷移
      * @param $id
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function absencePage($id = null)
+    public function absencePage()
     {
-        $attendance = $this->attendance->find($id);
-        return view('user.attendance.absence', compact('attendance'));
+        // $attendance = $this->attendance->find($id);
+        return view('user.attendance.absence');
     }
 
     /**
-     * 関数概要 : 欠席の登録
+     * 欠席の登録
      * @param AttendanceRequest $request
      * @return @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
      */
     public function absence(AttendanceRequest $request)
     {
-        $inputs = $request->all();
+        $inputs = $request->validated();
         $this->attendance->absentAttendance($inputs);
         return redirect()->route('attendance.index');
     }
 
     /**
-     * 関数概要 : modifyページへの遷移
+     * 修正申請ページへ遷移
      * @param $id
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
@@ -87,7 +87,7 @@ class AttendanceController extends Controller
     }
 
     /**
-     * 関数概要 : 修正申請の登録
+     * 修正申請の登録
      * @param AttendanceRequest $request
      * @return @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
      */
@@ -99,7 +99,7 @@ class AttendanceController extends Controller
     }
 
      /**
-     * 関数概要 : mypageへの遷移＆ユーザーの勤怠レコード＆合計出社日数＆累計学習時間の取得
+     * mypageへの遷移＆ユーザーの勤怠レコード＆合計出社日数＆累計学習時間の取得
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function mypage()
@@ -107,7 +107,7 @@ class AttendanceController extends Controller
         $userId = Auth::id();
         $attendances = $this->attendance->fetchUserAttendances($userId)->get();
         $attendanceMypage = $this->attendance->fetchUserAttendances($userId)
-            ->paginate(self::MAX_PAGE);
+            ->paginate(self::PER_PAGE);
         $dateSum = $this->attendance->fetchAttendance($userId)->count();
         $attendanceHours = round($this->attendance->attendanceTotalMinutes($attendances)/60); 
         return view('user.attendance.mypage', compact('attendanceMypage', 'dateSum', 'attendanceHours'));

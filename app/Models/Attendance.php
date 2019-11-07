@@ -38,7 +38,7 @@ class Attendance extends Model
     }
 
     /**
-     * 関数概要 : ユーザーの最新の勤怠レコードの取得。
+     * ユーザーの最新の勤怠レコードの取得。
      * @param int $userId
      * @return Attendance
      */
@@ -50,11 +50,11 @@ class Attendance extends Model
     }
 
     /**
-     * 関数概要 : 出勤時間をDBへ登録。
+     * 出勤時間をDBへ登録。
      * @param int 
      * @return void
      */
-    public function registrerStartTime()
+    public function registerStartTime()
     {
         $nowTime = Carbon::now();
         $today = $nowTime->format('Y-m-d');
@@ -66,11 +66,11 @@ class Attendance extends Model
     }
 
     /**
-     * 関数概要 : 退勤時間をDBへ登録。
+     * 退勤時間をDBへ登録。
      * @param int 
      * @return void
      */
-    public function registrerEndTime($id)
+    public function registerEndTime($id)
     {
         $nowTime = Carbon::now();
         if ($this->find($id)->date->isToday()) {
@@ -81,40 +81,38 @@ class Attendance extends Model
     }
 
     /**
-     * 関数概要 : 欠席をDBへ登録
+     * 欠席をDBへ登録
      * @param array $data
      * @return void
      */
     public function absentAttendance($data)
     {
-        $data['user_id'] = Auth::id();
-        $data['date'] =  Carbon::now()->format('Y-m-d');
+        $todayAttendance = $this->fetchTodayUserAttendance();
         $data['absent_status'] = self::IS_ABSENT;
-        if (!empty($data['id'])) {
-            $this->updateAbsentAttendance($data);
+        if (!empty($todayAttendance)) {
+            $this->updateAbsentAttendance($todayAttendance, $data);
         } else {
-            $this->attendance->fill($data)->save();
+            $data['user_id'] = Auth::id();
+            $data['date'] =  Carbon::now()->format('Y-m-d');
+            $this->create($data);
         };
     }
 
     /**
-     * 関数概要 : 欠席をDBへ登録
+     * 欠席をDBへ登録
      * @param array $data
      * @return void
      */
-    public function updateAbsentAttendance($data)
+    public function updateAbsentAttendance($todayAttendance, $data)
     {
-        return $this->where([
-            'date' => $data['date'], 
-            'user_id' => $data['user_id']
-        ])->update([
+        return $todayAttendance->update([
             'absent_status' => $data['absent_status'],
             'absent_reason' => $data['absent_reason']
         ]);
     }
 
     /**
-     * 関数概要 : 修正申請をDBへ登録
+     * 修正申請をDBへ登録
      * @param array $data
      * @return void
      */
@@ -132,19 +130,20 @@ class Attendance extends Model
     }
 
     /**
-     * 関数概要 : 出勤＆退勤が共に登録されているレコードの取得
+     * 出勤＆退勤が共に登録されていて欠席登録されていないレコードの取得
      * @param $userId
      * @return Builder
      */
     public function fetchAttendance($userId)
     {
         return $this->fetchUserAttendances($userId)
+            ->where('absent_status', null)
             ->whereNotNull('start_time')
             ->whereNotNull('end_time');
     }
 
     /**
-     * 関数概要 : ユーザーのレコードを最新順に取得
+     * ユーザーのレコードを最新順に取得
      * @param $userId
      * @return Builder
      */
@@ -154,7 +153,7 @@ class Attendance extends Model
     }
 
     /**
-     * 関数概要 : ユーザーの累計学習時間(分)を算出
+     * ユーザーの累計学習時間(分)を算出
      * @param Cllection $attendances
      * @return int $attendanceTotalMinutes
      */
