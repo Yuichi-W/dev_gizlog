@@ -59,7 +59,6 @@ class AttendanceController extends Controller
      */
     public function absencePage()
     {
-        // $attendance = $this->attendance->find($id);
         return view('user.attendance.absence');
     }
 
@@ -80,10 +79,9 @@ class AttendanceController extends Controller
      * @param $id
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function modifyPage($id)
+    public function modificationPage()
     {
-        $attendance = $this->attendance->find($id);
-        return view('user.attendance.modify', compact('attendance'));
+        return view('user.attendance.modify');
     }
 
     /**
@@ -91,9 +89,9 @@ class AttendanceController extends Controller
      * @param AttendanceRequest $request
      * @return @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
      */
-    public function modify(AttendanceRequest $request)
+    public function modification(AttendanceRequest $request)
     { 
-        $inputs = $request->all();
+        $inputs = $request->validated();
         $this->attendance->updateModifyAttendance($inputs);
         return redirect()->route('attendance.index');
     }
@@ -105,11 +103,11 @@ class AttendanceController extends Controller
     public function mypage()
     {
         $userId = Auth::id();
-        $attendances = $this->attendance->fetchUserAttendances($userId)->get();
+        $attendances = $this->attendance->fetchAttendance($userId)->get();
         $attendanceMypage = $this->attendance->fetchUserAttendances($userId)
             ->paginate(self::PER_PAGE);
-        $dateSum = $this->attendance->fetchAttendance($userId)->count();
+        $attendanceTotalDate = $this->attendance->fetchAttendance($userId)->count();
         $attendanceHours = round($this->attendance->attendanceTotalMinutes($attendances)/60); 
-        return view('user.attendance.mypage', compact('attendanceMypage', 'dateSum', 'attendanceHours'));
+        return view('user.attendance.mypage', compact('attendanceMypage', 'attendanceTotalDate', 'attendanceHours'));
     }
 }

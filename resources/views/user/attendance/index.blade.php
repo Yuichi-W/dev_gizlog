@@ -25,10 +25,10 @@
   </div>
   <ul class="button-wrap">
     <li>
-      <a class="at-btn absence" href="{{ route('attendance.absence.page', (empty($attendances)) ?: $attendances->id ) }}">欠席登録</a>
+      <a class="at-btn absence" href="{{ route('attendance.absence.page') }}">欠席登録</a>
     </li>
     <li>
-      <a class="at-btn modify" href="{{ route('attendance.modify.page', (empty($attendances)) ?: $attendances->id ) }}">修正申請</a>
+      <a class="at-btn modify" href="{{ route('attendance.modify.page') }}">修正申請</a>
     </li>
     <li>
       <a class="at-btn my-list" href="/attendance/mypage">マイページ</a>

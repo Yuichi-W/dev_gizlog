@@ -31,13 +31,13 @@ Route::group(['prefix' => '/', 'user.', 'namespace' => 'User'], function () {
     Route::get('home', 'UserController@index')->name('home');
 
     Route::get('attendance', ['as' => 'attendance.index', 'uses' => 'AttendanceController@index']);
-    Route::get('attendance/absence/{id}', ['as' => 'attendance.absence.page', 'uses' => 'AttendanceController@absencePage']);
-    Route::get('attendance/modify/{id}', ['as' => 'attendance.modify.page', 'uses' => 'AttendanceController@modifyPage']);
+    Route::get('attendance/absence', ['as' => 'attendance.absence.page', 'uses' => 'AttendanceController@absencePage']);
+    Route::get('attendance/modify', ['as' => 'attendance.modify.page', 'uses' => 'AttendanceController@modificationPage']);
     Route::get('attendance/mypage', ['as' => 'attendance.mypage', 'uses' => 'AttendanceController@mypage']);
     Route::post('attendance/register', ['as' => 'attendance.startTime.register', 'uses' => 'AttendanceController@registerAttendanceStartTime']);
     Route::put('attendance/{id}/register', ['as' => 'attendance.endTime.register', 'uses' => 'AttendanceController@registerAttendanceEndTime']);
     Route::post('attendance/absence', ['as' => 'attendance.absence', 'uses' => 'AttendanceController@absence']);
-    Route::put('attendance/modify', ['as' => 'attendance.modify', 'uses' => 'AttendanceController@modify']);
+    Route::put('attendance/modify', ['as' => 'attendance.modify', 'uses' => 'AttendanceController@modification']);
 
     Route::resource('report', DailyReportController::class);
 

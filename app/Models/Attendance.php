@@ -118,12 +118,9 @@ class Attendance extends Model
      */
     public function updateModifyAttendance($data)
     {
-        $data['user_id'] = Auth::id();
+        $todayAttendance = $this->fetchTodayUserAttendance();
         $data['revision_status'] = self::IS_REVISION;
-        $this->where([
-            'date' => $data['date'], 
-            'user_id' => $data['user_id']
-        ])->update([
+        $todayAttendance->update([
             'revision_status' => $data['revision_status'],
             'revision_request' => $data['revision_request']
         ]);
@@ -137,7 +134,7 @@ class Attendance extends Model
     public function fetchAttendance($userId)
     {
         return $this->fetchUserAttendances($userId)
-            ->where('absent_status', null)
+            ->where('absent_status', 0)
             ->whereNotNull('start_time')
             ->whereNotNull('end_time');
     }
