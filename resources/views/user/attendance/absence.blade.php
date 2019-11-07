@@ -9,7 +9,6 @@
         {!! Form::textarea('absent_reason', null, ['class' => 'form-control', 'placeholder' => '欠席理由を入力してください。']) !!}
         <span class="help-block">{{ $errors->first('absent_reason') }}</span>
       </div>
-      {!! Form::hidden('id', $attendance->id) !!}
       {!! Form::submit('登録', ['class' => 'btn btn-success pull-right']) !!}
     {!! Form::close() !!}
   </div>
