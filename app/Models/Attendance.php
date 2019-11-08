@@ -8,7 +8,6 @@ use Carbon\Carbon;
 
 class Attendance extends Model
 {
-    const INITIAL_MINUTES = 0;
     const IS_NOT_ABSENT = 0;
     const IS_ABSENT = 1;
     const IS_NOT_REVISION = 0;
@@ -175,23 +174,5 @@ class Attendance extends Model
     public function scopeUserAttendances($query, $userId)
     {
         return $query->where('user_id', $userId);
-    }
-
-    /**
-     * ユーザーの累計学習時間(分)を算出
-     * @param Cllection $attendances
-     * @return int $attendanceTotalMinutes
-     */
-    public function attendanceTotalMinutes($attendances)
-    {
-        $attendanceTotalMinutes = self::INITIAL_MINUTES;
-        foreach ($attendances as $attendance) {
-            if (!empty($attendance->start_time) && !empty($attendance->end_time)) {
-                $attendanceMinutes = $attendance->start_time
-                    ->diffInMinutes($attendance->end_time);
-                $attendanceTotalMinutes += $attendanceMinutes;
-            }
-        }
-        return $attendanceTotalMinutes;
     }
 }

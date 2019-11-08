@@ -11,6 +11,7 @@ use Carbon\Carbon;
 class AttendanceController extends Controller
 {
     const PER_PAGE = 10;
+    const INITIAL_MINUTES = 0;
 
     protected $attendance;
 
@@ -121,7 +122,25 @@ class AttendanceController extends Controller
             ->orderBy('date', 'desc')
             ->paginate(self::PER_PAGE);
         $attendanceTotalDate = $this->attendance->daysAttended($userId)->count();
-        $attendanceHours = round($this->attendance->attendanceTotalMinutes($attendances)/60); 
+        $attendanceHours = round($this->attendanceTotalMinutes($attendances)/60); 
         return view('user.attendance.mypage', compact('attendanceMypage', 'attendanceTotalDate', 'attendanceHours'));
+    }
+
+    /**
+     * ユーザーの累計学習時間(分)を算出
+     * @param Collection $attendances
+     * @return int $attendanceTotalMinutes
+     */
+    public function attendanceTotalMinutes($attendances)
+    {
+        $attendanceTotalMinutes = self::INITIAL_MINUTES;
+        foreach ($attendances as $attendance) {
+            if (!empty($attendance->start_time) && !empty($attendance->end_time)) {
+                $attendanceMinutes = $attendance->start_time
+                    ->diffInMinutes($attendance->end_time);
+                $attendanceTotalMinutes += $attendanceMinutes;
+            }
+        }
+        return $attendanceTotalMinutes;
     }
 }
