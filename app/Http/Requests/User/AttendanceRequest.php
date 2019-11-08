@@ -24,16 +24,16 @@ class AttendanceRequest extends FormRequest
     public function rules()
     {
         return [
+            'date'             => 'required|date|before:now',
             'revision_request' => 'sometimes|required|max:500',
             'absent_reason'    => 'sometimes|required|max:500',
-            'date'             => 'sometimes|required|before:now',
         ];
     }
 
     public function messages()
     {
         return [
-            'date_time.before' => '今日以前の日付を入力してください',
+            'date.before' => '今日以前の日付を入力してください',
             'required'         => '入力必須の項目です',
             'max'              => ':max文字以内で入力してください。',
         ];
