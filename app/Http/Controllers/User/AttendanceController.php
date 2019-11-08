@@ -45,18 +45,18 @@ class AttendanceController extends Controller
 
     /**
       * 退社時間の登録
-      * @param $id
+      *
       * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
       */
-    public function registerAttendanceEndTime($id)
+    public function registerAttendanceEndTime()
     {
-        $this->attendance->registerEndTime($id);
-        return redirect()->route('attendance.index');
+        $attendances = $this->attendance->registerEndTime();
+        return view('user.attendance.index', compact('attendances'));
     }
 
     /**
      * 欠席登録ページへ遷移
-     * @param $id
+     * 
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function absencePage()
@@ -66,6 +66,7 @@ class AttendanceController extends Controller
 
     /**
      * 欠席の登録
+     * 
      * @param AttendanceRequest $request
      * @return @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
      */
@@ -78,7 +79,7 @@ class AttendanceController extends Controller
 
     /**
      * 修正申請ページへ遷移
-     * @param $id
+     * 
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function modificationPage()
@@ -88,6 +89,7 @@ class AttendanceController extends Controller
 
     /**
      * 修正申請の登録
+     * 
      * @param AttendanceRequest $request
      * @return @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
      */
@@ -100,6 +102,7 @@ class AttendanceController extends Controller
 
      /**
      * mypageへの遷移＆ユーザーの勤怠レコード＆合計出社日数＆累計学習時間の取得
+     * 
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function mypage()

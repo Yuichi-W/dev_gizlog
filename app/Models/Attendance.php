@@ -38,7 +38,7 @@ class Attendance extends Model
     }
 
     /**
-     * ユーザーの今日の勤怠レコードの取得。
+     * 選択した日付のユーザーの勤怠レコードの取得。
      * @param int $userId
      * @return Attendance
      */
@@ -67,13 +67,18 @@ class Attendance extends Model
      * @param int 
      * @return void
      */
-    public function registerEndTime($id)
+    public function registerEndTime()
     {
-        if ($this->find($id)->date->isToday()) {
-            $this->find($id)->update([
+        $today = Carbon::now()->format('Y-m-d');
+        $todayAttendance = $this->fetchSelectDayUserAttendance($today);
+        if (!empty($todayAttendance->first())) {
+            $attendances = $todayAttendance->update([
                 'end_time' => Carbon::now()
             ]);
+        } else {
+            $attendances = '再度メニューから勤怠をクリックし本日の出社時間の登録を行ってください';
         }
+        return $attendances;
     }
 
     /**
@@ -102,7 +107,7 @@ class Attendance extends Model
      */
     public function updateAbsentAttendance($todayAttendance, $data)
     {
-        return $todayAttendance->update([
+        $todayAttendance->update([
             'absent_status' => $data['absent_status'],
             'absent_reason' => $data['absent_reason']
         ]);
@@ -117,10 +122,15 @@ class Attendance extends Model
     {
         $selectDayAttendance = $this->fetchSelectDayUserAttendance($data['date']);
         $data['revision_status'] = self::IS_REVISION;
+        if (!empty($selectDayAttendance->first())) {
         $selectDayAttendance->update([
             'revision_status' => $data['revision_status'],
             'revision_request' => $data['revision_request']
         ]);
+        } else {
+            $data['user_id'] = Auth::id();
+            $this->create($data);
+        }
     }
 
     /**
