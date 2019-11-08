@@ -159,9 +159,9 @@ class Attendance extends Model
      * @param $userId
      * @return Builder
      */
-    public function fetchAttendance($userId)
+    public function scopeDaysAttended($query, $userId)
     {
-        return $this->fetchUserAttendances($userId)
+        return $query->userAttendances($userId)
             ->where('absent_status', 0)
             ->whereNotNull('start_time')
             ->whereNotNull('end_time');
@@ -172,9 +172,9 @@ class Attendance extends Model
      * @param $userId
      * @return Builder
      */
-    public function fetchUserAttendances($userId)
+    public function scopeUserAttendances($query, $userId)
     {
-        return $this->where('user_id', $userId)->orderBy('date', 'desc');
+        return $query->where('user_id', $userId);
     }
 
     /**
