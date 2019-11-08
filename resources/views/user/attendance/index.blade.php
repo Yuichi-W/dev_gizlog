@@ -13,14 +13,16 @@
     </div>
   </div>
   <div class="button-holder">
-    @if (empty($attendances))
+    @if (is_string($attendances))
+      <a class="button disabled" href="">{{ $message }}</a>
+    @elseif (empty($attendances))
       <a class="button start-btn" id="register-attendance" href=#openModal>出社時間登録</a>
     @elseif ($attendances['absent_status'] === 1)
-    <a class="button disabled" href="">欠席</a>
+      <a class="button disabled" href="">欠席</a>
     @elseif (!empty($attendances->start_time) && empty($attendances->end_time) && empty($attendances['absent_status']))
       <a class="button end-btn" id="register-attendance" href=#openModal>退社時間登録</a>
-    @elseif (!empty($attendances->start_time) && !empty($attendances->end_time))
-    <a class="button disabled" href="">退社済み</a>
+    @elseif (($attendances === 1) || !empty($attendances->start_time) && !empty($attendances->end_time))
+      <a class="button disabled" href="">退社済み</a>
     @endif
   </div>
   <ul class="button-wrap">
@@ -43,7 +45,7 @@
       @if (empty($attendances))
         {!! Form::open(['route' => 'attendance.startTime.register', 'method' => 'POST']) !!}
       @else
-        {!! Form::open(['route' => ['attendance.endTime.register', $attendances->id], 'method' => 'PUT']) !!}
+        {!! Form::open(['route' => 'attendance.endTime.register', 'method' => 'PUT']) !!}
       @endif
         <a href="#close" class="cancel-btn">Cancel</a>
         {!! Form::submit('Yes', ['class' => 'yes-btn']) !!}
