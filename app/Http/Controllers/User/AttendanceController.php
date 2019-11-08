@@ -102,7 +102,7 @@ class AttendanceController extends Controller
     public function modification(AttendanceRequest $request)
     { 
         $inputs = $request->validated();
-        $this->attendance->updateModifyAttendance($inputs);
+        $this->attendance->modifyAttendance($inputs);
         return redirect()->route('attendance.index');
     }
 

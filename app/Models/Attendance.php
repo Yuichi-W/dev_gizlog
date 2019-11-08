@@ -81,20 +81,14 @@ class Attendance extends Model
      */
     public function absentAttendance($data)
     {
-        $today = Carbon::now()->format('Y-m-d');
-        $todayAttendance = $this->fetchSelectDayUserAttendance($today);
+        $date['date'] = Carbon::now()->format('Y-m-d');
+        $todayAttendance = $this->fetchSelectDayUserAttendance($date['date']);
         $data['absent_status'] = self::IS_ABSENT;
-        if (!empty($todayAttendance)) {
-            $this->updateAbsentAttendance($todayAttendance, $data);
-        } else {
-            $data['user_id'] = Auth::id();
-            $data['date'] =  Carbon::now()->format('Y-m-d');
-            $this->create($data);
-        };
+        $this->recordCheck($todayAttendance, $data);
     }
 
     /**
-     * 欠席をDBへ登録
+     * 欠席をDBへ更新
      * @param array $data
      * @return void
      */
@@ -107,23 +101,57 @@ class Attendance extends Model
     }
 
     /**
-     * 修正申請をDBへ登録
+     * 申請をDBへ登録
      * @param array $data
      * @return void
      */
-    public function updateModifyAttendance($data)
+    public function modifyAttendance($data)
     {
         $selectDayAttendance = $this->fetchSelectDayUserAttendance($data['date']);
         $data['revision_status'] = self::IS_REVISION;
-        if (!empty($selectDayAttendance->first())) {
+        $this->recordCheck($selectDayAttendance, $data);
+    }
+
+    /**
+     * 修正申請をDBへ更新
+     * @param array $data
+     * @return void
+     */
+    public function updateModifyAttendance($selectDayAttendance, $data)
+    {
         $selectDayAttendance->update([
             'revision_status' => $data['revision_status'],
             'revision_request' => $data['revision_request']
         ]);
+    }
+
+    /**
+     * レコードがあるかないかの確認
+     * @param $record $data
+     * @return void
+     */
+    public function recordCheck($record, $data)
+    {
+        if (!empty($record->first())) {
+            if (!empty($data['absent_status'])) {
+                $this->updateAbsentAttendance($record, $data);
+            } else {
+                $this->updateModifyAttendance($record, $data);
+            }
         } else {
-            $data['user_id'] = Auth::id();
-            $this->create($data);
+            $this->attendanceCreate($data);
         }
+    }
+
+    /**
+     * 新規作成
+     * @param $data
+     * @return void
+     */
+    public function attendanceCreate($data)
+    {
+        $data['user_id'] = Auth::id();
+        $this->create($data);
     }
 
     /**
