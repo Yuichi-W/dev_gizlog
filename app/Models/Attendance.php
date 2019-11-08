@@ -67,18 +67,11 @@ class Attendance extends Model
      * @param int 
      * @return void
      */
-    public function registerEndTime()
+    public function registerEndTime($todayAttendance)
     {
-        $today = Carbon::now()->format('Y-m-d');
-        $todayAttendance = $this->fetchSelectDayUserAttendance($today);
-        if (!empty($todayAttendance->first())) {
-            $attendances = $todayAttendance->update([
-                'end_time' => Carbon::now()
-            ]);
-        } else {
-            $attendances = '再度メニューから勤怠をクリックし本日の出社時間の登録を行ってください';
-        }
-        return $attendances;
+        $todayAttendance->update([
+            'end_time' => Carbon::now()
+        ]);
     }
 
     /**

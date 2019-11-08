@@ -50,7 +50,13 @@ class AttendanceController extends Controller
       */
     public function registerAttendanceEndTime()
     {
-        $attendances = $this->attendance->registerEndTime();
+        $today = Carbon::now()->format('Y-m-d');
+        $todayAttendance = $this->fetchSelectDayUserAttendance($today);
+        if (!empty($todayAttendance->first())) {
+            $attendances = $this->attendance->registerEndTime($todayAttendance);
+        } else {
+            $attendances = '再度メニューから勤怠をクリックし本日の出社時間の登録を行ってください';
+        }
         return view('user.attendance.index', compact('attendances'));
     }
 
